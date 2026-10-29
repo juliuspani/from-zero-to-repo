@@ -62,7 +62,8 @@ cd my-first-project
 npm test
 npm run dr-repo
 ```
-✅ `npm test` ends with `fail 0`; Dr. Repo says `Score: 10/10`.
+✅ `npm test` ends with `fail 0`; Dr. Repo says `Score: 10/10`. (Windows: if PowerShell says *running scripts is
+disabled*, see [the table at the end](#if-you-see-this-error).)
 
 **7. Install Claude Code and open it in the project.** *The agent, inside your folder.*
 Follow [the official setup](https://docs.claude.com/en/docs/claude-code/setup) (you need a Claude account), then,
@@ -109,6 +110,7 @@ gh repo view --web
 | Your settings seem to be ignored | the file is `settings.json.txt` | [Museum 4](mistakes-museum.md#the-settings-file-that-was-a-txt) |
 | `BLOCKED by .claude/hooks/guard.mjs: the guardrails … are edited by a human` | Claude tried to change its own rules | Edit the file yourself in a text editor: [Museum 1](mistakes-museum.md#the-agent-that-tried-to-edit-its-own-rules) |
 | Claude repeats itself, forgets decisions, or says the context is almost full | the session is too long | `/relevo`, `/clear`, `/arranque`: [Museum 6](mistakes-museum.md#the-session-that-forgot-everything) |
+| `npm.ps1 cannot be loaded because running scripts is disabled on this system` | Windows PowerShell does not run script files by default, and `npm` is one | Type `npm.cmd` instead of `npm` (`npm.cmd test`), or allow your own scripts once: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
 | `npm test` fails | a check found a real problem | Paste the failing lines to Claude and ask it to explain before fixing |
 
 Stuck on something else? [Open an issue](../../../issues): beginner questions are welcome.
