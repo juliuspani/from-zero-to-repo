@@ -1,0 +1,9 @@
+# Secrets never enter the repository. .env.example (names only) is the exception.
+.env
+.env.*
+!.env.example
+
+# Personal Claude Code overrides stay on each machine.
+.claude/settings.local.json
+
+node_modules/

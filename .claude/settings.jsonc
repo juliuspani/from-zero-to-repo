@@ -1,0 +1,112 @@
+// Commented copy of .claude/settings.json. Claude Code reads settings.json, which is plain JSON and cannot
+// hold comments, so the explanation lives here. `npm test` fails if the two files drift apart: change both in
+// the same commit (strip the comments and you get settings.json).
+//
+// How Claude Code resolves a tool call: a `deny` rule wins over everything, then `ask`, then `allow`; anything
+// not listed falls back to `defaultMode`. The PreToolUse hook runs on top of all of that and can block a call
+// that the permissions allow. Rules are prefix matches on the command text, so they are a convenience and a
+// first layer, never the only one.
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    // File edits inside the project are accepted without asking. Commands still follow the lists below.
+    "defaultMode": "acceptEdits",
+
+    // ALLOW: what Claude may run without asking. Only commands that read, or that write inside the
+    // repository and are undone with git. No push, no network, no installs.
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git log)",
+      "Bash(git log *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm test)",
+      "Bash(npm test *)",
+      "Bash(npm run *)",
+      // On Windows Claude Code may also use PowerShell: every rule needs its PowerShell twin, or the
+      // command silently falls back to defaultMode.
+      "PowerShell(git status)",
+      "PowerShell(git status *)",
+      "PowerShell(git log)",
+      "PowerShell(git log *)",
+      "PowerShell(git diff)",
+      "PowerShell(git diff *)",
+      "PowerShell(git add *)",
+      "PowerShell(git commit *)",
+      "PowerShell(npm test)",
+      "PowerShell(npm test *)",
+      "PowerShell(npm run *)"
+    ],
+
+    // ASK: what Claude may run only after a human says yes, every time. Anything that leaves the machine
+    // (push, network), rewrites history, deletes files or installs code that may run scripts.
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git reset *)",
+      "Bash(git rebase *)",
+      "Bash(git clean *)",
+      "Bash(rm *)",
+      "Bash(rmdir *)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(ssh *)",
+      "Bash(scp *)",
+      "Bash(npx *)",
+      "Bash(npm install *)",
+      "PowerShell(git push *)",
+      "PowerShell(git reset *)",
+      "PowerShell(git rebase *)",
+      "PowerShell(git clean *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(rm *)",
+      "PowerShell(del *)",
+      "PowerShell(Invoke-WebRequest *)",
+      "PowerShell(Invoke-RestMethod *)",
+      "PowerShell(curl *)",
+      "PowerShell(npx *)",
+      "PowerShell(npm install *)"
+    ],
+
+    // DENY: never, not even if a human approves in the moment (edit this file by hand instead).
+    // Secrets: list the usual .env variants one by one. A generic "./.env.*" would also deny .env.example,
+    // the versioned template with names only; the hook covers every other .env.* file.
+    // Guardrails: Claude must not be able to edit the rules that bind it. The hook blocks it too.
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.*.local)",
+      "Read(./.env.development)",
+      "Read(./.env.production)",
+      "Read(./.env.test)",
+      "Edit(./.env)",
+      "Edit(./.env.local)",
+      "Edit(./.env.*.local)",
+      "Edit(./.env.development)",
+      "Edit(./.env.production)",
+      "Edit(./.env.test)",
+      "Edit(./.claude/settings.json)",
+      "Edit(./.claude/settings.jsonc)",
+      "Edit(./.claude/settings.local.json)",
+      "Edit(./.claude/hooks/**)"
+    ]
+  },
+
+  // The guard hook runs before every tool that can read, write or execute. Exit code 2 blocks the call.
+  // $CLAUDE_PROJECT_DIR keeps it working whatever the current directory is.
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell|Read|Edit|Write|NotebookEdit|Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
