@@ -113,10 +113,16 @@ export function buildDemoSvg(stdout = realRun()) {
   const height = TOP + PAD + (lines.length + 1) * LINE + 8;
   const typed = COMMAND.length;
   const typeEnd = 0.5 + typed * 0.035;
+  // One keyframe per line on the same cycle: each line appears in turn, and they all go out together before the
+  // command is typed again (with animation-delay they would go out one by one, after the command had gone).
+  const pct = (s) => ((s / CYCLE) * 100).toFixed(2);
+  const keyframes = lines.map((_, i) => {
+    const at = typeEnd + 0.35 + i * STEP;
+    return `@keyframes a${i}{0%,${pct(at)}%{opacity:0}${pct(at + 0.05)}%,94%{opacity:1}96%,100%{opacity:0}}`;
+  });
   const rows = lines.map((l, i) => {
     const y = TOP + PAD + (i + 1) * LINE;
-    const delay = (typeEnd + 0.35 + i * STEP).toFixed(2);
-    return `<text class="l ${l.k}" y="${y}" style="animation-delay:${delay}s">${spans(l.text, l.k)}</text>`;
+    return `<text class="l ${l.k}" y="${y}" style="animation-name:a${i}">${spans(l.text, l.k)}</text>`;
   });
   const title = 'Dr. Repo checking a project with three planted faults';
   const desc = `A terminal runs "${COMMAND}". Dr. Repo prints its diagnosis line by line: ` +
@@ -131,13 +137,11 @@ text{font:${FONT}px ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Libera
 .okm{fill:#3fb950;font-weight:700}.fixm{fill:#f0883e;font-weight:700}.lbl{fill:#8b949e}
 .ok{fill:#adbac7}.fix{fill:#e6edf3}.detail{fill:#f0b072}.how{fill:#c9d1d9}.why{fill:#58a6ff}
 .head{fill:#e6edf3;font-weight:700}.score{fill:#ffffff;font-weight:700}.rx{fill:#56d4dd}
-.l{opacity:0;animation:show ${CYCLE}s infinite backwards}
+.l{opacity:0;animation-duration:${CYCLE}s;animation-iteration-count:infinite}
 .cover{animation:type ${CYCLE}s steps(${typed}) infinite}
-.cursor{animation:blink 1s steps(1) infinite}
-@keyframes show{0%{opacity:0}1%{opacity:1}90%{opacity:1}92%,100%{opacity:0}}
-@keyframes type{0%,${((0.5 / CYCLE) * 100).toFixed(2)}%{transform:translateX(0)}${((typeEnd / CYCLE) * 100).toFixed(2)}%,100%{transform:translateX(${(typed * CHAR).toFixed(1)}px)}}
-@keyframes blink{50%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.l,.cover,.cursor{animation:none}.l{opacity:1}.cover{display:none}}
+@keyframes type{0%,${pct(0.5)}%{transform:translateX(0)}${pct(typeEnd)}%,100%{transform:translateX(${(typed * CHAR).toFixed(1)}px)}}
+${keyframes.join('\n')}
+@media (prefers-reduced-motion:reduce){.l,.cover{animation:none}.l{opacity:1}.cover{display:none}}
 </style>
 <rect width="${width}" height="${height}" rx="10" fill="#0d1117"/>
 <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="10" fill="none" stroke="#30363d"/>

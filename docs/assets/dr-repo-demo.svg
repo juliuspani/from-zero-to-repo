@@ -7,13 +7,41 @@ text{font:13px ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation 
 .okm{fill:#3fb950;font-weight:700}.fixm{fill:#f0883e;font-weight:700}.lbl{fill:#8b949e}
 .ok{fill:#adbac7}.fix{fill:#e6edf3}.detail{fill:#f0b072}.how{fill:#c9d1d9}.why{fill:#58a6ff}
 .head{fill:#e6edf3;font-weight:700}.score{fill:#ffffff;font-weight:700}.rx{fill:#56d4dd}
-.l{opacity:0;animation:show 16s infinite backwards}
+.l{opacity:0;animation-duration:16s;animation-iteration-count:infinite}
 .cover{animation:type 16s steps(36) infinite}
-.cursor{animation:blink 1s steps(1) infinite}
-@keyframes show{0%{opacity:0}1%{opacity:1}90%{opacity:1}92%,100%{opacity:0}}
 @keyframes type{0%,3.13%{transform:translateX(0)}11.00%,100%{transform:translateX(281.9px)}}
-@keyframes blink{50%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.l,.cover,.cursor{animation:none}.l{opacity:1}.cover{display:none}}
+@keyframes a0{0%,13.19%{opacity:0}13.50%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a1{0%,13.88%{opacity:0}14.19%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a2{0%,14.56%{opacity:0}14.88%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a3{0%,15.25%{opacity:0}15.56%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a4{0%,15.94%{opacity:0}16.25%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a5{0%,16.63%{opacity:0}16.94%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a6{0%,17.31%{opacity:0}17.63%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a7{0%,18.00%{opacity:0}18.31%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a8{0%,18.69%{opacity:0}19.00%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a9{0%,19.38%{opacity:0}19.69%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a10{0%,20.06%{opacity:0}20.38%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a11{0%,20.75%{opacity:0}21.06%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a12{0%,21.44%{opacity:0}21.75%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a13{0%,22.13%{opacity:0}22.44%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a14{0%,22.81%{opacity:0}23.13%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a15{0%,23.50%{opacity:0}23.81%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a16{0%,24.19%{opacity:0}24.50%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a17{0%,24.88%{opacity:0}25.19%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a18{0%,25.56%{opacity:0}25.87%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a19{0%,26.25%{opacity:0}26.56%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a20{0%,26.94%{opacity:0}27.25%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a21{0%,27.63%{opacity:0}27.94%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a22{0%,28.31%{opacity:0}28.63%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a23{0%,29.00%{opacity:0}29.31%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a24{0%,29.69%{opacity:0}30.00%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a25{0%,30.38%{opacity:0}30.69%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a26{0%,31.06%{opacity:0}31.38%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a27{0%,31.75%{opacity:0}32.06%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a28{0%,32.44%{opacity:0}32.75%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a29{0%,33.13%{opacity:0}33.44%,94%{opacity:1}96%,100%{opacity:0}}
+@keyframes a30{0%,33.81%{opacity:0}34.13%,94%{opacity:1}96%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.l,.cover{animation:none}.l{opacity:1}.cover{display:none}}
 </style>
 <rect width="761" height="648" rx="10" fill="#0d1117"/>
 <rect x="0.5" y="0.5" width="760" height="647" rx="10" fill="none" stroke="#30363d"/>
@@ -23,36 +51,36 @@ text{font:13px ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation 
 <g transform="translate(20 0)">
 <text y="64"><tspan class="ps">$ </tspan><tspan class="cmd">npm run dr-repo -- ../my-old-project</tspan></text>
 <rect class="cover" x="14.2" y="51" width="293.9" height="18" fill="#0d1117"/>
-<text class="l detail" y="82" style="animation-delay:2.11s"></text>
-<text class="l head" y="100" style="animation-delay:2.22s">Dr. Repo's diagnosis (read-only, no network)</text>
-<text class="l detail" y="118" style="animation-delay:2.33s"></text>
-<text class="l ok" y="136" style="animation-delay:2.44s">  <tspan class="okm">ok</tspan>   .env files are git-ignored</text>
-<text class="l fix" y="154" style="animation-delay:2.55s">  <tspan class="fixm">FIX</tspan>  no .env file is committed</text>
-<text class="l detail" y="172" style="animation-delay:2.66s">        committed: .env</text>
-<text class="l how" y="190" style="animation-delay:2.77s">        <tspan class="lbl">how:</tspan> Untrack it (git rm --cached -- &lt;file&gt;), rotate every key it held, and ignore</text>
-<text class="l how" y="208" style="animation-delay:2.88s">          it.</text>
-<text class="l why" y="226" style="animation-delay:2.99s">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
-<text class="l why" y="244" style="animation-delay:3.10s">          md#the-env-rule-that-blocked-the-wrong-file</text>
-<text class="l fix" y="262" style="animation-delay:3.21s">  <tspan class="fixm">FIX</tspan>  no secret-looking strings in tracked files</text>
-<text class="l detail" y="280" style="animation-delay:3.32s">        config.js:1 (AWS access key)</text>
-<text class="l how" y="298" style="animation-delay:3.43s">        <tspan class="lbl">how:</tspan> Move the value to .env (ignored), read it from the environment, and rotate the</text>
-<text class="l how" y="316" style="animation-delay:3.54s">          key: it is already exposed.</text>
-<text class="l why" y="334" style="animation-delay:3.65s">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
-<text class="l why" y="352" style="animation-delay:3.76s">          md#the-env-rule-that-blocked-the-wrong-file</text>
-<text class="l ok" y="370" style="animation-delay:3.87s">  <tspan class="okm">ok</tspan>   git uses your private GitHub email</text>
-<text class="l ok" y="388" style="animation-delay:3.98s">  <tspan class="okm">ok</tspan>   CLAUDE.md exists (the rules Claude reads first)</text>
-<text class="l ok" y="406" style="animation-delay:4.09s">  <tspan class="okm">ok</tspan>   PROGRESS.md exists (the memory between sessions)</text>
-<text class="l fix" y="424" style="animation-delay:4.20s">  <tspan class="fixm">FIX</tspan>  .claude/settings.json exists and allows nothing risky without asking</text>
-<text class="l detail" y="442" style="animation-delay:4.31s">        settings.json: Bash(*) (any command)</text>
-<text class="l how" y="460" style="animation-delay:4.42s">        <tspan class="lbl">how:</tspan> Start from from-zero-to-repo/.claude/settings.jsonc: push, network, shells and</text>
-<text class="l how" y="478" style="animation-delay:4.53s">          interpreters in &quot;ask&quot;, never a bare Bash; check settings.local.json too.</text>
-<text class="l why" y="496" style="animation-delay:4.64s">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
-<text class="l why" y="514" style="animation-delay:4.75s">          md#the-settings-file-that-was-a-txt</text>
-<text class="l ok" y="532" style="animation-delay:4.86s">  <tspan class="okm">ok</tspan>   a PreToolUse guard hook is wired and its file exists</text>
-<text class="l ok" y="550" style="animation-delay:4.97s">  <tspan class="okm">ok</tspan>   Claude cannot edit its own settings or hooks</text>
-<text class="l ok" y="568" style="animation-delay:5.08s">  <tspan class="okm">ok</tspan>   commands, agents and .git are protected too</text>
-<text class="l detail" y="586" style="animation-delay:5.19s"></text>
-<text class="l score" y="604" style="animation-delay:5.30s">Score: 7/10</text>
-<text class="l rx" y="622" style="animation-delay:5.41s">Prescription: run again with --prompt to get a prompt for each fix.</text>
+<text class="l detail" y="82" style="animation-name:a0"></text>
+<text class="l head" y="100" style="animation-name:a1">Dr. Repo's diagnosis (read-only, no network)</text>
+<text class="l detail" y="118" style="animation-name:a2"></text>
+<text class="l ok" y="136" style="animation-name:a3">  <tspan class="okm">ok</tspan>   .env files are git-ignored</text>
+<text class="l fix" y="154" style="animation-name:a4">  <tspan class="fixm">FIX</tspan>  no .env file is committed</text>
+<text class="l detail" y="172" style="animation-name:a5">        committed: .env</text>
+<text class="l how" y="190" style="animation-name:a6">        <tspan class="lbl">how:</tspan> Untrack it (git rm --cached -- &lt;file&gt;), rotate every key it held, and ignore</text>
+<text class="l how" y="208" style="animation-name:a7">          it.</text>
+<text class="l why" y="226" style="animation-name:a8">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
+<text class="l why" y="244" style="animation-name:a9">          md#the-env-rule-that-blocked-the-wrong-file</text>
+<text class="l fix" y="262" style="animation-name:a10">  <tspan class="fixm">FIX</tspan>  no secret-looking strings in tracked files</text>
+<text class="l detail" y="280" style="animation-name:a11">        config.js:1 (AWS access key)</text>
+<text class="l how" y="298" style="animation-name:a12">        <tspan class="lbl">how:</tspan> Move the value to .env (ignored), read it from the environment, and rotate the</text>
+<text class="l how" y="316" style="animation-name:a13">          key: it is already exposed.</text>
+<text class="l why" y="334" style="animation-name:a14">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
+<text class="l why" y="352" style="animation-name:a15">          md#the-env-rule-that-blocked-the-wrong-file</text>
+<text class="l ok" y="370" style="animation-name:a16">  <tspan class="okm">ok</tspan>   git uses your private GitHub email</text>
+<text class="l ok" y="388" style="animation-name:a17">  <tspan class="okm">ok</tspan>   CLAUDE.md exists (the rules Claude reads first)</text>
+<text class="l ok" y="406" style="animation-name:a18">  <tspan class="okm">ok</tspan>   PROGRESS.md exists (the memory between sessions)</text>
+<text class="l fix" y="424" style="animation-name:a19">  <tspan class="fixm">FIX</tspan>  .claude/settings.json exists and allows nothing risky without asking</text>
+<text class="l detail" y="442" style="animation-name:a20">        settings.json: Bash(*) (any command)</text>
+<text class="l how" y="460" style="animation-name:a21">        <tspan class="lbl">how:</tspan> Start from from-zero-to-repo/.claude/settings.jsonc: push, network, shells and</text>
+<text class="l how" y="478" style="animation-name:a22">          interpreters in &quot;ask&quot;, never a bare Bash; check settings.local.json too.</text>
+<text class="l why" y="496" style="animation-name:a23">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
+<text class="l why" y="514" style="animation-name:a24">          md#the-settings-file-that-was-a-txt</text>
+<text class="l ok" y="532" style="animation-name:a25">  <tspan class="okm">ok</tspan>   a PreToolUse guard hook is wired and its file exists</text>
+<text class="l ok" y="550" style="animation-name:a26">  <tspan class="okm">ok</tspan>   Claude cannot edit its own settings or hooks</text>
+<text class="l ok" y="568" style="animation-name:a27">  <tspan class="okm">ok</tspan>   commands, agents and .git are protected too</text>
+<text class="l detail" y="586" style="animation-name:a28"></text>
+<text class="l score" y="604" style="animation-name:a29">Score: 7/10</text>
+<text class="l rx" y="622" style="animation-name:a30">Prescription: run again with --prompt to get a prompt for each fix.</text>
 </g>
 </svg>

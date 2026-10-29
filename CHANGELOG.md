@@ -12,7 +12,7 @@ All notable changes to From Zero to Repo.
   names: nothing else depends on them.
 - **A new social preview** (`docs/assets/social-preview.png`, 1280 × 640) for links shared on social media.
 - **A README you can read in 60 seconds:**
-  - an animated terminal at the top (`docs/assets/dr-repo-demo.svg`, about 6 KB, no JavaScript) showing a real run of
+  - an animated terminal at the top (`docs/assets/dr-repo-demo.svg`, under 10 KB, no JavaScript) showing a real run of
     Dr. Repo on a project with three planted faults. `node scripts/dr-repo-demo.mjs --write` rebuilds it, and a test
     fails if Dr. Repo's output changes without rebuilding it;
   - "Pick your path";
