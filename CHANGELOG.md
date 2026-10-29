@@ -19,7 +19,7 @@ All notable changes to From Zero to Repo.
   - "The 60-second cheatsheet";
   - "What you'll have at the end";
   - a short FAQ;
-  - the JP seal in the footer, dark or light to match GitHub's theme.
+  - the JP seal in the footer, in its 32 px version (thicker marks), dark or light to match GitHub's theme.
 - **The link test also checks** `src`, `srcset` and `href` in the HTML of the Markdown files.
 
 ## [1.0.0] — 2026-10-29

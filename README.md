@@ -119,4 +119,4 @@ nivel 2) está en inglés. Proyecto comunitario, sin afiliación con Anthropic.
 
 ---
 
-<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/seal.svg"><img src="docs/assets/seal-light.svg" width="32" height="32" alt="JP seal"></picture><br><sub>Made by <a href="https://github.com/juliuspani">JP</a></sub></p>
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/assets/seal-small.svg"><img src="docs/assets/seal-small-light.svg" width="32" height="32" alt="JP seal"></picture><br><sub>Made by <a href="https://github.com/juliuspani">JP</a></sub></p>
