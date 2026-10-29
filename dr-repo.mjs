@@ -53,8 +53,9 @@ export function isEnvFile(path) {
 
 /** Text from the project, safe to print: control and invisible characters escaped, length capped. */
 export function show(text, max = 600) {
-  const safe = String(text).replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028\u2029\u202a-\u202e\u2066-\u2069\ufeff]/g, (c) => `\\u${c.charCodeAt(0).toString(16).padStart(4, '0')}`);
-  return safe.length > max ? `${safe.slice(0, max)}…` : safe;
+  const safe = String(text).replace(/[\p{Cc}\p{Cf}\p{Co}\p{Cn}\p{Zl}\p{Zp}\u{FE00}-\u{FE0F}\u{180E}]/gu, (c) => `\\u{${c.codePointAt(0).toString(16)}}`);
+  const chars = [...safe];
+  return chars.length > max ? `${chars.slice(0, max).join('')}…` : safe;
 }
 
 const inside = (root, path) => {
@@ -88,13 +89,14 @@ function gitdirOnNetwork(root) {
   }
 }
 
-function git(p, args) {
+function git(p, args, input) {
   if (!p.git) return null;
   try {
     return execFileSync(p.git, ['-C', p.root, '-c', 'core.fsmonitor=false', '-c', 'core.hooksPath=', '-c', 'core.excludesFile=', ...args], {
       cwd: p.root,
       encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
+      input,
+      stdio: [input === undefined ? 'ignore' : 'pipe', 'pipe', 'ignore'],
       timeout: 30_000,
       maxBuffer: 64 * 1024 * 1024,
       env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0', GIT_CEILING_DIRECTORIES: dirname(p.root) },
@@ -156,7 +158,8 @@ function project(root) {
       : existsSync(join(root, '.git'))
         ? 'git refused to read this repository (another user owns it, see safe.directory, or .git is broken)'
         : 'not a git repository';
-  p.tracked = p.isRepo ? (git(p, ['ls-files', '-z']) ?? '').split('\0').filter(Boolean) : walk(root);
+  // null when git could not list them (timeout, too big): the checks that need the list then fail, never pass.
+  p.tracked = p.isRepo ? (git(p, ['ls-files', '-z'])?.split('\0').filter(Boolean) ?? null) : walk(root);
   p.present = walk(root);
   p.settings = readSettings(p, 'settings.json');
   p.localSettings = readSettings(p, 'settings.local.json');
@@ -164,11 +167,16 @@ function project(root) {
   return p;
 }
 
-/** Ignored by a rule that travels with the repository (a .gitignore), not by .git/info/exclude or a global file. */
-function ignoredByRepo(p, file) {
-  const out = git(p, ['check-ignore', '-v', '--no-index', '--', file]);
-  const m = out === null ? null : /^(.*?):\d+:(.*)\t/.exec(out);
-  return m !== null && !m[1].startsWith('.git/') && !m[2].startsWith('!');
+/** The paths ignored by a committed .gitignore: not by .git/info/exclude, a global file or an untracked .gitignore. */
+function ignoredByRepo(p, files) {
+  const out = git(p, ['check-ignore', '-v', '-z', '--stdin', '--no-index'], `${files.join('\0')}\0`);
+  const fields = (out ?? '').split('\0');
+  const ignored = new Set();
+  for (let k = 0; k + 3 < fields.length; k += 4) {
+    const [source, , pattern, path] = fields.slice(k, k + 4);
+    if (/(^|\/)\.gitignore$/.test(source) && (p.tracked ?? []).includes(source) && !pattern.startsWith('!')) ignored.add(path);
+  }
+  return ignored;
 }
 
 const list = (settings, name) => (Array.isArray(settings?.permissions?.[name]) ? settings.permissions[name] : []);
@@ -182,12 +190,15 @@ function riskyAllow(rule) {
   const m = /^(Bash|PowerShell)\(([\s\S]*)\)$/.exec(r);
   if (!m) return null;
   const inner = m[2].trim();
+  if (inner === '' || /^[*:]/.test(inner)) return 'any command';
   if (/git\s+push/i.test(inner)) return 'push without asking';
   const words = inner.replace(/(:\*|\s*\*)$/, '').trim().split(/\s+/);
   if (NETWORK.test(words[0].replace(/:.*$/, ''))) return 'network';
   if (!/\*$/.test(inner)) return null;
   if (RUNS_ANYTHING.test(words[0]) && (words.length === 1 || words[1].startsWith('-'))) return `any ${words[0]} command`;
   if (/^(npm|pnpm|yarn|bun)$/i.test(words[0]) && /^(run|exec|x|dlx)$/i.test(words[1] ?? '') && words.length === 2) return `any ${words[0]} ${words[1]} script`;
+  if (/^(npm|pnpm|yarn|bun)$/i.test(words[0]) && /^(install|i|add|ci)$/i.test(words[1] ?? '') && words.length === 2) return 'installs run package scripts';
+  if (/^git$/i.test(words[0]) && /^config$/i.test(words[1] ?? '') && words.length === 2) return 'git config can make git run programs';
   return null;
 }
 
@@ -205,7 +216,9 @@ export const CHECKS = [
     run: (p) => {
       if (!p.isRepo) return { ok: false, detail: `${p.notRepo ?? 'not a git repository'}, so nothing is ignored yet` };
       const probes = ['.env', '.env.local', 'prod.env', '.envrc'];
-      const bad = [...new Set([...probes, ...p.present.filter(isEnvFile)])].filter((f) => !ignoredByRepo(p, f));
+      const candidates = [...new Set([...probes, ...p.present.filter(isEnvFile)])];
+      const ignored = ignoredByRepo(p, candidates);
+      const bad = candidates.filter((f) => !ignored.has(f));
       return bad.length === 0 ? { ok: true } : { ok: false, detail: `not ignored by a committed .gitignore: ${bad.join(', ')}` };
     },
     fix: 'Add .env, .env.*, *.env and .envrc (and !.env.example) to .gitignore, and commit it.',
@@ -216,6 +229,7 @@ export const CHECKS = [
     id: 'env-tracked',
     title: 'no .env file is committed',
     run: (p) => {
+      if (p.tracked === null) return { ok: false, detail: 'git could not list the tracked files, so they were not checked' };
       const bad = p.tracked.filter(isEnvFile);
       return bad.length === 0 ? { ok: true } : { ok: false, detail: `committed: ${bad.join(', ')}` };
     },
@@ -227,6 +241,7 @@ export const CHECKS = [
     id: 'secrets',
     title: 'no secret-looking strings in tracked files',
     run: (p) => {
+      if (p.tracked === null) return { ok: false, detail: 'git could not list the tracked files, so they were not checked' };
       const hits = [];
       for (const file of p.tracked) {
         const text = readInside(p, file, MAX_SCAN_BYTES);

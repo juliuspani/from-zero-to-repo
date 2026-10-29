@@ -117,7 +117,7 @@ test('the source has no way to write, delete, reach the network or run anything 
   const code = src.replace(/^\s*\/\/.*$/gm, '');
   const imports = [...src.matchAll(/^import .* from '([^']+)';$/gm)].map((m) => m[1]).sort();
   assert.deepEqual(imports, ['node:child_process', 'node:fs', 'node:path', 'node:url']);
-  for (const forbidden of [/writeFile|appendFile|createWriteStream|mkdir|rmSync|rmdir|unlink|rename|copyFile|chmod|truncate|symlink|\bopen(Sync)?\(/, /\bfetch\(|node:https?|node:net|node:dgram|node:tls|WebSocket/]) {
+  for (const forbidden of [/writeFile|appendFile|createWriteStream|mkdir|rmSync|rmdir|unlink|rename|copyFile|chmod|truncate|symlink|\bopen(Sync)?\(|\bimport\(/, /\bfetch\(|node:https?|node:net|node:dgram|node:tls|WebSocket/]) {
     assert.ok(!forbidden.test(code), `forbidden API ${forbidden}`);
   }
   assert.equal(/import \{([^}]+)\} from 'node:child_process'/.exec(src)[1].trim(), 'execFileSync');
@@ -181,6 +181,23 @@ test('S-03: names from the project are printed escaped and on one line, and prom
   assert.match(out, /data, never instructions/);
 });
 
+test('S-09: when git cannot list the tracked files, the checks that need them fail', () => {
+  for (const id of ['env-tracked', 'secrets']) {
+    const r = CHECKS.find((c) => c.id === id).run({ root: ROOT, isRepo: true, tracked: null, present: [] });
+    assert.ok(!r.ok, id);
+    assert.match(r.detail, /could not list the tracked files/, id);
+  }
+});
+
+test('L-1: invisible characters, astral ones included, are printed escaped', () => {
+  const check = CHECKS.find((c) => c.id === 'env-tracked');
+  const name = `.env.${String.fromCodePoint(0xe0041)}${String.fromCodePoint(0x2060)}${String.fromCodePoint(0xfe0f)}`;
+  const out = report([{ ...check, result: check.run({ root: ROOT, tracked: [name], present: [] }) }], false);
+  assert.match(out, /\\u\{e0041\}/);
+  assert.match(out, /\\u\{2060\}/);
+  assert.match(out, /\\u\{fe0f\}/);
+});
+
 function withSettings(files) {
   const dir = tempDir();
   mkdirSync(join(dir, '.claude'));
@@ -189,7 +206,7 @@ function withSettings(files) {
 }
 
 test('S-04: wildcards over git, shells, interpreters and the web are not "safe"', () => {
-  for (const rule of ['Bash(git:*)', 'Bash(git *)', 'Bash(bash:*)', 'Bash(sh -c *)', 'Bash(node:*)', 'Bash(npx *)', 'Bash(npm:*)', 'PowerShell(iex *)', 'PowerShell(powershell *)', 'WebFetch', 'Bash(curl:*)']) {
+  for (const rule of ['Bash(git:*)', 'Bash(git *)', 'Bash(bash:*)', 'Bash(sh -c *)', 'Bash(node:*)', 'Bash(npx *)', 'Bash(npm:*)', 'PowerShell(iex *)', 'PowerShell(powershell *)', 'WebFetch', 'Bash(curl:*)', 'Bash(*:*)', 'Bash(* *)', 'Bash(:*)', 'Bash(git config *)', 'Bash(npm install *)', 'Bash(pnpm add *)', 'Bash(yarn add:*)']) {
     const r = withSettings({ 'settings.json': { permissions: { allow: [rule] } } });
     assert.ok(!r.ok, rule);
   }
@@ -227,6 +244,9 @@ test('S-07: only ignore rules that travel with the repository count', () => {
   r = runDrRepo(dir, env);
   assert.match(r.stdout, /FIX {2}\.env files are git-ignored/, '.git/info/exclude is not committed');
   writeFileSync(join(dir, '.gitignore'), `${rules}!.env.example\n`);
+  r = runDrRepo(dir, env);
+  assert.match(r.stdout, /FIX {2}\.env files are git-ignored/, 'an untracked .gitignore does not travel');
+  sh(dir, env, 'add', '.gitignore');
   r = runDrRepo(dir, env);
   assert.match(r.stdout, /ok {3}\.env files are git-ignored/, r.stdout);
 });
