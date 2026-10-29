@@ -4,28 +4,28 @@
 
 ## El ciclo
 
-`/arranque` → un paso → `/relevo` → `/clear` → repetir. **Un paso por sesión.**
+`/start` → un paso → `/handoff` → `/clear` → repetir. **Un paso por sesión.**
 
 ## Qué usar y cuándo
 
 | Momento | Escribe | Qué pasa |
 |---|---|---|
-| Abres Claude Code | `/arranque` | Lee las reglas, el progreso y git; informa en 5 líneas; comprueba que la guarda está viva; espera |
-| El paso está hecho, o el contexto pasa del ~60 % | `/relevo` | Comprobaciones, `PROGRESS.md` al día, commit y push (te pregunta antes) |
-| Justo después de `/relevo` | `/clear` | Contexto limpio. No se pierde nada del repo |
+| Abres Claude Code | `/start` | Lee las reglas, el progreso y git; informa en 5 líneas; comprueba que la guarda está viva; espera |
+| El paso está hecho, o el contexto pasa del ~60 % | `/handoff` | Comprobaciones, `PROGRESS.md` al día, commit y push (te pregunta antes) |
+| Justo después de `/handoff` | `/clear` | Contexto limpio. No se pierde nada del repo |
 | Claude va a hacer algo que no le pediste | `Esc` | Lo para. Después dile lo que quieres |
 
 Los comandos viven en `.claude/commands/`. Si tu proyecto no los tiene, estos son los prompts, listos para
 pegar:
 
-**`/arranque`**
+**`/start`**
 ```text
 Lee CLAUDE.md, PROGRESS.md (sobre todo la sección HANDOFF), git status y git log -5. No modifiques nada
 todavía. Resume en 5 líneas dónde estamos, qué harás a continuación y cualquier inconsistencia entre
 PROGRESS.md y el repositorio. Espera mi aprobación.
 ```
 
-**`/relevo`**
+**`/handoff`**
 ```text
 Cambiamos de paso. No empieces trabajo nuevo. 1) Termina el subpaso a medias si es corto; si no, deshazlo y
 dilo. 2) Ejecuta todas las comprobaciones e informa del resultado real. 3) Actualiza la sección HANDOFF de
@@ -42,7 +42,7 @@ Escribe `/context` para verlo. Regla práctica:
 |---|---|
 | menos del 40 % | Sigue |
 | 40–60 % | Termina la pieza actual; nada de tareas grandes nuevas |
-| más del 60 % | `/relevo` ya, apunta la parte en la que vas («paso 7, parte 2 de 3»), `/clear` y sigue en limpio |
+| más del 60 % | `/handoff` ya, apunta la parte en la que vas («paso 7, parte 2 de 3»), `/clear` y sigue en limpio |
 
 ## Cinco hábitos
 

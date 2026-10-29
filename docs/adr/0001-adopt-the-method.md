@@ -16,7 +16,7 @@ that took them, and where the important rules hold even when the agent makes a m
 1. **One step per context.** Each step has its own prompt, written by the owner, and fits in one session.
    If it does not fit, it is split into parts, each one ending in a green commit.
 2. **State lives in the repository.** `PROGRESS.md` (under 200 lines) is the only state the next session
-   needs. `/arranque` reads it at the start; `/relevo` writes the HANDOFF section and commits at the end.
+   needs. `/start` reads it at the start; `/handoff` writes the HANDOFF section and commits at the end.
 3. **Decisions are written down.** Small ones go to `PROGRESS.md` ("Decisions taken by Claude"), important
    ones to an ADR. The owner reviews them afterwards and can revert them.
 4. **Autonomous mode with mandatory stops.** Claude decides with the safest reversible option and stops only

@@ -104,8 +104,8 @@ decisiones anteriores, y el contexto se llenó a mitad de un cambio.
 **Por qué.** El *contexto* de Claude (su memoria de trabajo en una conversación) es finito. Cuando se llena, los
 detalles antiguos se resumen o se pierden, y la calidad baja antes de que se vea lleno.
 
-**Qué lo evita ahora.** Un paso por sesión. Antes del ~60 % de contexto, ejecuta `/relevo`: escribe el estado en
-`PROGRESS.md` y hace el commit. Después `/clear`, y `/arranque` en la sesión nueva.
+**Qué lo evita ahora.** Un paso por sesión. Antes del ~60 % de contexto, ejecuta `/handoff`: escribe el estado en
+`PROGRESS.md` y hace el commit. Después `/clear`, y `/start` en la sesión nueva.
 
 **Prueba.** `test/method.test.mjs` → *"PROGRESS.md stays under 200 lines"*. Dr. Repo: `claude-md`, `progress-md`.
 
@@ -120,7 +120,7 @@ y deshacer la parte hecha.
 **Por qué.** Sin una parada explícita, un agente con ganas sigue adelante: «y ahora lo siguiente…».
 
 **Qué lo evita ahora.** El cierre estándar de `CLAUDE.md` termina cada paso con *para y espera la aprobación*, y
-`/relevo` termina o deshace un subpaso a medias antes de nada.
+`/handoff` termina o deshace un subpaso a medias antes de nada.
 
 **Prueba.** `CLAUDE.md` §3, y la sección HANDOFF que `test/method.test.mjs` exige en `PROGRESS.md`.
 

@@ -25,8 +25,8 @@ If you created your repository from this template, it is already set up. To add 
    regenerate `.claude/settings.json` from the commented copy.
 3. If you keep the checks, merge the `test` script of `package.json` into yours and run `npm test`
    (Node 20 or later, no dependencies).
-4. Open Claude Code in the project and type `/arranque`. Paste the prompt of your first step. When it is
-   done, type `/relevo`.
+4. Open Claude Code in the project and type `/start`. Paste the prompt of your first step. When it is
+   done, type `/handoff`.
 
 ## What's inside
 
@@ -34,8 +34,8 @@ If you created your repository from this template, it is already set up. To add 
 |---|---|
 | [`CLAUDE.md`](../CLAUDE.md) | The constitution: what the project is, non-negotiable rules, the standard closing of every step, the session start protocol, where things are, and who decides what (autonomous mode with mandatory stops). Loaded in every session, so it is short. |
 | [`PROGRESS.md`](../PROGRESS.md) | The only state the next session needs: current step, checks, pending decisions, decisions taken by Claude, commitments for future steps, the HANDOFF block and current risks. Capped at 200 lines. |
-| [`.claude/commands/arranque.md`](../.claude/commands/arranque.md) | `/arranque` ("start-up"): read the state, report in five lines, flag inconsistencies, wait. |
-| [`.claude/commands/relevo.md`](../.claude/commands/relevo.md) | `/relevo` ("handoff"): finish or revert the half-done part, run the checks, write the HANDOFF, commit, push. |
+| [`.claude/commands/start.md`](../.claude/commands/start.md) | `/start`: read the state, report in five lines, flag inconsistencies, wait. |
+| [`.claude/commands/handoff.md`](../.claude/commands/handoff.md) | `/handoff`: finish or revert the half-done part, run the checks, write the HANDOFF, commit, push. |
 | [`.claude/agents/`](../.claude/agents/) | Two read-only consultants (security, software) with no shell, no write tools and no subagents. |
 | [`docs/CONSULTANTS.md`](CONSULTANTS.md) | When and how to use the consultants, their shared rules, severity scale, report format, and what the tooling does and does not guarantee. |
 | [`.claude/hooks/guard.mjs`](../.claude/hooks/guard.mjs) | Example `PreToolUse` guard: blocks access to environment files and protected paths, destructive commands, skipping git hooks, and any edit to the guardrails themselves (settings, hooks, commands, agents, `.git/config`, `.git/hooks`). Its header lists what it cannot see. |
@@ -47,8 +47,8 @@ If you created your repository from this template, it is already set up. To add 
 | [`test/`](../test/) | The method checked by code: the guard's behaviour, the 200-line cap, consultant rules, settings drift, ADR numbering, skill descriptions, and that Dr. Repo never writes or uses the network. |
 | [`dr-repo.mjs`](../dr-repo.mjs) | Dr. Repo, the read-only check-up that scores any project on these protections. |
 
-The two commands keep their Spanish names from the original project. Rename the files if you prefer
-`/start` and `/handoff`; nothing else depends on the names.
+The file name is the command name: rename `start.md` or `handoff.md` if you prefer other words; nothing else depends on
+them. (In the project where the method was born they were called `/arranque` and `/relevo`.)
 
 ## The method
 
@@ -64,14 +64,14 @@ ending in a green commit and a handoff, never in uncommitted changes.
 
 ### Handoffs
 
-`/relevo` ends a session; `/arranque` starts the next. Between them, the only memory is the repository:
+`/handoff` ends a session; `/start` starts the next. Between them, the only memory is the repository:
 
 - `PROGRESS.md` holds the current state and a HANDOFF block: what was finished, **what remains exactly, with
   the next concrete action**, files touched, decisions, open questions, the real result of every check, and
   what is fragile.
 - The handoff runs the full check and reports the real result. If it fails, the work is still committed, on a
   `wip/step-N` branch with the reason written down. Nothing is left uncommitted.
-- `/arranque` compares `PROGRESS.md` with `git status` and `git log`. A commit or a change the file does not
+- `/start` compares `PROGRESS.md` with `git status` and `git log`. A commit or a change the file does not
   explain is the first thing it reports.
 - `PROGRESS.md` is capped at 200 lines. Old handoffs move to `docs/progress/HISTORY.md` and approved decisions
   to `docs/progress/DECISIONS.md`. A progress file that only grows stops being read.
@@ -110,7 +110,7 @@ Know the holes, because believing in a guard you do not have is worse than havin
 - **The hook compares text.** A path built at run time (a `cd` and then a relative name, a variable, a
   symbolic link) is not seen. It is a seatbelt against mistakes, not a sandbox against an adversary.
 - **If the hook cannot start** (node missing, `$CLAUDE_PROJECT_DIR` not expanded), Claude Code treats that as
-  a non-blocking error and the call goes on. `/arranque` therefore checks that a known call is still blocked.
+  a non-blocking error and the call goes on. `/start` therefore checks that a known call is still blocked.
 - **MCP tools are outside the hook's matcher.** Add them if you install a server that touches files.
 
 Where it truly matters (production credentials, real money, customer data), the barrier is physical: the

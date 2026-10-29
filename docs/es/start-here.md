@@ -39,16 +39,19 @@ Cada sesión sigue el mismo ciclo. Es todo el método en un dibujo.
 
 ```mermaid
 flowchart LR
-    A["/arranque<br/>leer el estado"] --> B["trabajar<br/>un paso"]
-    B --> C["/relevo<br/>comprobar, escribir, commit"]
+    A["/start<br/>leer el estado"] --> B["trabajar<br/>un paso"]
+    B --> C["/handoff<br/>comprobar, escribir, commit"]
     C --> D["/clear<br/>empezar limpio"]
     D --> A
 ```
 
-- **`/arranque`**: Claude lee `CLAUDE.md`, `PROGRESS.md` y git, te dice dónde estás y espera.
+- **`/start`**: Claude lee `CLAUDE.md`, `PROGRESS.md` y git, te dice dónde estás y espera.
 - **Trabajar**: un paso, lo bastante pequeño para terminarlo en esta sesión.
-- **`/relevo`**: Claude ejecuta las comprobaciones, escribe el estado en `PROGRESS.md` y hace el commit.
+- **`/handoff`**: Claude ejecuta las comprobaciones, escribe el estado en `PROGRESS.md` y hace el commit.
 - **`/clear`**: una pizarra limpia para el paso siguiente.
+
+Los comandos tienen nombre en inglés: `/start` es el *arranque* de la sesión y `/handoff` es el *relevo*, el traspaso a la
+sesión siguiente.
 
 ## Documentación oficial, cuando quieras más
 

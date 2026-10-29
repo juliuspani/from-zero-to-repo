@@ -76,9 +76,9 @@ claude
 ✅ Claude Code arranca y te pregunta si confías en esta carpeta. Di que sí: es tuya.
 
 **8. Empieza la sesión y dale un primer paso.** *Un cambio pequeño y real.*
-Escribe `/arranque`. Claude resume dónde está el proyecto y comprueba que el hook de guarda está vivo (debe
+Escribe `/start`. Claude resume dónde está el proyecto y comprueba que el hook de guarda está vivo (debe
 informar de una lectura de prueba **BLOCKED**). También verá que `CLAUDE.md` y `PROGRESS.md` aún tienen
-`<placeholders>`: es normal el primer día, y `/relevo` rellena `PROGRESS.md` por ti. Después pega el primer
+`<placeholders>`: es normal el primer día, y `/handoff` rellena `PROGRESS.md` por ti. Después pega el primer
 paso del [ejemplo](../../examples/todo-cli/README.md), o esta misma versión en español:
 
 ```text
@@ -93,7 +93,7 @@ Paso 1: añade un comando "done <número>" a examples/todo-cli/todo.mjs que marq
 `fail 0`.
 
 **9. Haz el relevo.** *Guardar el estado, hacer commit y push.*
-Escribe `/relevo`. Claude ejecuta las comprobaciones, actualiza `PROGRESS.md`, hace el commit y el push. El
+Escribe `/handoff`. Claude ejecuta las comprobaciones, actualiza `PROGRESS.md`, hace el commit y el push. El
 push te pide permiso: es la red de seguridad funcionando, di que sí.
 
 ✅ `git status` dice "nothing to commit, working tree clean".
@@ -103,7 +103,7 @@ push te pide permiso: es la red de seguridad funcionando, di que sí.
 ```bash
 gh repo view --web
 ```
-✅ Tu commit está en GitHub. De vuelta en Claude Code, escribe `/clear`. La próxima vez: `/arranque` y el paso
+✅ Tu commit está en GitHub. De vuelta en Claude Code, escribe `/clear`. La próxima vez: `/start` y el paso
 siguiente.
 
 🎉 Ya está: un proyecto real, con su historia, en línea y seguro.
@@ -120,7 +120,7 @@ siguiente.
 | Un archivo de configuración «se ve bien» pero dice que no es válido | un BOM invisible de Word o de PowerShell | [Museo 3](mistakes-museum.md#the-word-file-with-an-invisible-character) |
 | Parece que tus ajustes se ignoran | el archivo es `settings.json.txt` | [Museo 4](mistakes-museum.md#the-settings-file-that-was-a-txt) |
 | `BLOCKED by .claude/hooks/guard.mjs: the guardrails … are edited by a human` | Claude intentó cambiar sus propias reglas | Edita tú el archivo en un editor de texto: [Museo 1](mistakes-museum.md#the-agent-that-tried-to-edit-its-own-rules) |
-| Claude se repite, olvida decisiones o dice que el contexto está casi lleno | la sesión es demasiado larga | `/relevo`, `/clear`, `/arranque`: [Museo 6](mistakes-museum.md#the-session-that-forgot-everything) |
+| Claude se repite, olvida decisiones o dice que el contexto está casi lleno | la sesión es demasiado larga | `/handoff`, `/clear`, `/start`: [Museo 6](mistakes-museum.md#the-session-that-forgot-everything) |
 | `No se puede cargar el archivo …npm.ps1 porque la ejecución de scripts está deshabilitada en este sistema` | Windows PowerShell no ejecuta archivos de script por defecto, y `npm` es uno | Escribe `npm.cmd` en lugar de `npm`: `npm.cmd test`, `npm.cmd run dr-repo` |
 | `npm test` falla | una comprobación encontró un problema real | Pega las líneas que fallan a Claude y pídele que lo explique antes de arreglarlo |
 

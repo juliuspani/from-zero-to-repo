@@ -1,5 +1,5 @@
 ---
-description: Handoff ("relevo"). Close the session so the next one can start from PROGRESS.md alone.
+description: Handoff. Close the session so the next one can start from PROGRESS.md alone.
 ---
 
 This command counts as my approval of the step, unless a mandatory stop (CLAUDE.md §7) is still open.

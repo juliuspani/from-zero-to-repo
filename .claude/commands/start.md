@@ -1,5 +1,5 @@
 ---
-description: Session start ("arranque"). Read the project state and report before touching anything.
+description: Session start. Read the project state and report before touching anything.
 ---
 
 Read CLAUDE.md, PROGRESS.md (especially the HANDOFF section), git status and git log -5.

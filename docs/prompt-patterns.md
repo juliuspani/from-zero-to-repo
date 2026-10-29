@@ -63,7 +63,7 @@ is allowed is what makes it stop.
 
 ❌ Closing the laptop and hoping the next session remembers.
 
-✅ `/relevo`: *"Update the HANDOFF in PROGRESS.md with what remains exactly and the next concrete action. Commit. Push."* Next session: `/arranque`.
+✅ `/handoff`: *"Update the HANDOFF in PROGRESS.md with what remains exactly and the next concrete action. Commit. Push."* Next session: `/start`.
 
 **Why.** The next session has no memory. A written state it reads in ten seconds beats a long conversation it
 half-remembers ([Museum 6](mistakes-museum.md#the-session-that-forgot-everything)).

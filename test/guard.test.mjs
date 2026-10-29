@@ -122,7 +122,7 @@ test('S-08: other environment file names are secrets too', () => {
 });
 
 test('S-09: commands and agents are guardrails; skills stay editable', () => {
-  assert.notEqual(evaluate('Edit', { file_path: '.claude/commands/relevo.md', new_string: 'x' }), null);
+  assert.notEqual(evaluate('Edit', { file_path: '.claude/commands/handoff.md', new_string: 'x' }), null);
   assert.notEqual(evaluate('Write', { file_path: '.claude/agents/consultant-security.md', content: 'x' }), null);
   assert.equal(evaluate('Read', { file_path: '.claude/agents/consultant-security.md' }), null);
   assert.equal(bash('git add .claude/skills/engineering-standard/SKILL.md'), null);

@@ -32,7 +32,7 @@ missing it tells you how to fix it, why it matters, and a prompt to paste in Cla
 | **[Level 1: Your first session in 10 steps](docs/first-session.md)** | From zero to your first push, with a tiny [example project](examples/todo-cli/) so you never face a blank page. |
 | **[Mistakes Museum](docs/mistakes-museum.md)** | Real mistakes, told as short stories: what happened, why, what prevents it now, and the test that proves it. |
 | **[Prompts that worked](docs/prompt-patterns.md)** | Eight patterns, each with a bad prompt, a good one and why. |
-| **[Cheatsheet](docs/cheatsheet.md)** | `/arranque`, `/relevo`, when to clear, one step per session. |
+| **[Cheatsheet](docs/cheatsheet.md)** | `/start`, `/handoff`, when to clear, one step per session. |
 | **[Level 2: Training Wheels for your agent](docs/level-2.md)** | **Optional.** The guard hook, permissions, read-only reviewers and the rules behind them, already set up in this template. Levels 0 and 1 work without reading it. |
 
 Use it: click **Use this template** on GitHub, or follow [step 5](docs/first-session.md).
@@ -59,7 +59,7 @@ Anthropic's products, used here only to say what this guide is about.
 ## Resumen en español
 
 **From Zero to Repo** te lleva de no tener nada instalado a tu primer proyecto real con Claude Code, publicado y
-seguro. Funciona con un ciclo sencillo: `/arranque` → un paso → `/relevo` → `/clear`. **Dr. Repo**
+seguro. Funciona con un ciclo sencillo: `/start` → un paso → `/handoff` → `/clear`. **Dr. Repo**
 (`node dr-repo.mjs <ruta> --prompt`) revisa cualquier proyecto sin cambiar nada y te dice cómo arreglar cada
 fallo. El **museo de errores** cuenta los errores reales del proyecto en el que nació este método, con la
 prueba que demuestra que ya no pasan. El **nivel 2** (opcional) añade ruedines para el agente: un hook de

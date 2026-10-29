@@ -99,8 +99,8 @@ earlier decisions, and the context filled up mid-change.
 **Why.** Claude's *context* (its working memory for one conversation) is finite. When it fills, older details are
 summarized or lost, and quality drops before it is visibly full.
 
-**What prevents it now.** One step per session. Before ~60% of context, run `/relevo`: it writes the state to
-`PROGRESS.md` and commits. Then `/clear`, and `/arranque` in the fresh session.
+**What prevents it now.** One step per session. Before ~60% of context, run `/handoff`: it writes the state to
+`PROGRESS.md` and commits. Then `/clear`, and `/start` in the fresh session.
 
 **Proof.** `test/method.test.mjs` → *"PROGRESS.md stays under 200 lines"*. Dr. Repo: `claude-md`, `progress-md`.
 
@@ -115,7 +115,7 @@ and undo the half-done part.
 **Why.** Without an explicit stop, an eager agent keeps going: "and now the next thing…".
 
 **What prevents it now.** The standard closing in `CLAUDE.md` ends every step with *stop and wait for approval*,
-and `/relevo` finishes or reverts a half-done sub-step before anything else.
+and `/handoff` finishes or reverts a half-done sub-step before anything else.
 
 **Proof.** `CLAUDE.md` §3, and the HANDOFF section that `test/method.test.mjs` requires in `PROGRESS.md`.
 

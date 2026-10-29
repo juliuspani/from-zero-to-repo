@@ -27,7 +27,7 @@ something here clashes with `CLAUDE.md`, `CLAUDE.md` wins. Domain skills rule in
 ## 3. Small changes and atomic commits
 
 - One behaviour per commit. A refactor and a behaviour change never share a commit.
-- Every commit leaves the full check green, except `wip/*` branches during a handoff (`/relevo`).
+- Every commit leaves the full check green, except `wip/*` branches during a handoff (`/handoff`).
 - Commit messages say what changed and why. Long messages go through `git commit -F <file>`.
 
 ## 4. Tests
@@ -89,8 +89,8 @@ The step summary says: what changed and why, files touched, the real result of e
 1. Before starting, estimate whether it fits. If not, split it into parts that make sense on their own
    ("Step 25, part 1 of 3"), each with its own green commit.
 2. Write the plan of parts in `PROGRESS.md` with the next concrete action.
-3. When cutting, run `/relevo`: checks, `PROGRESS.md` and commit. Never leave uncommitted changes.
-4. The next session starts with `/arranque` and resumes from what is written, without re-reading what is
+3. When cutting, run `/handoff`: checks, `PROGRESS.md` and commit. Never leave uncommitted changes.
+4. The next session starts with `/start` and resumes from what is written, without re-reading what is
    already summarized.
 
 ## 13. How to work

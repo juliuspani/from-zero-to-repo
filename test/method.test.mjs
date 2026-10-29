@@ -140,3 +140,13 @@ test('the guides never ask a beginner to weaken an operating system safety setti
   const docs = ['docs', 'docs/es'].flatMap((d) => readdirSync(resolve(ROOT, d)).filter((f) => f.endsWith('.md')).map((f) => `${d}/${f}`));
   for (const file of [...docs, 'README.md']) assert.doesNotMatch(read(file), /Set-ExecutionPolicy/i, file);
 });
+
+test('the session commands are /start and /handoff, and no page still calls them by their old names', () => {
+  const commands = readdirSync(resolve(ROOT, '.claude/commands')).sort();
+  assert.deepEqual(commands, ['handoff.md', 'start.md']);
+  const docs = ['docs', 'docs/es'].flatMap((d) => readdirSync(resolve(ROOT, d)).filter((f) => f.endsWith('.md')).map((f) => `${d}/${f}`));
+  for (const file of [...docs, 'README.md', 'dr-repo.mjs', '.claude/hooks/guard.mjs']) {
+    const old = read(file).replace('`/arranque` and `/relevo`', '');
+    assert.doesNotMatch(old, /\/arranque|\/relevo/, file);
+  }
+});

@@ -319,7 +319,7 @@ export const CHECKS = [
       if (files.length === 0) return { ok: false, detail: 'the hook command names no script file I can find' };
       return missing.length === 0 ? { ok: true } : { ok: false, detail: `hook file missing: ${missing.join(', ')}` };
     },
-    fix: 'Copy .claude/hooks/guard.mjs and its "hooks" block from from-zero-to-repo, then check /arranque reports it alive.',
+    fix: 'Copy .claude/hooks/guard.mjs and its "hooks" block from from-zero-to-repo, then check /start reports it alive.',
     prompt: 'Explain what the guard hook in https://github.com/juliuspani/from-zero-to-repo/blob/main/.claude/hooks/guard.mjs blocks, and adapt its PROTECTED list to this project. Do not write into .claude/ yourself: give me the files to copy by hand and the exact "hooks" block for settings.json.',
     museum: 'the-agent-that-tried-to-edit-its-own-rules',
   },

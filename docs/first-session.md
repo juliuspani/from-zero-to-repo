@@ -75,15 +75,15 @@ claude
 ✅ Claude Code starts and asks whether you trust this folder. Say yes: it is yours.
 
 **8. Start the session and give it a first step.** *One small, real change.*
-Type `/arranque`. Claude summarizes where the project is and checks that the guard hook is alive (it should
+Type `/start`. Claude summarizes where the project is and checks that the guard hook is alive (it should
 report a **BLOCKED** test read). It will also notice that `CLAUDE.md` and `PROGRESS.md` still have
-`<placeholders>`: normal on day one, and `/relevo` fills `PROGRESS.md` for you. Then paste the first step from
+`<placeholders>`: normal on day one, and `/handoff` fills `PROGRESS.md` for you. Then paste the first step from
 [the example](../examples/todo-cli/README.md).
 
 ✅ Claude shows a test failing, then passing, and stops to wait for you. `npm test` still ends with `fail 0`.
 
 **9. Hand off.** *Save the state, commit and push.*
-Type `/relevo`. Claude runs the checks, updates `PROGRESS.md`, commits and pushes. Pushing asks for your
+Type `/handoff`. Claude runs the checks, updates `PROGRESS.md`, commits and pushes. Pushing asks for your
 permission: that is the safety net working, say yes.
 
 ✅ `git status` says "nothing to commit, working tree clean".
@@ -93,7 +93,7 @@ permission: that is the safety net working, say yes.
 ```bash
 gh repo view --web
 ```
-✅ Your commit is on GitHub. Back in Claude Code, type `/clear`. Next time: `/arranque` and the next step.
+✅ Your commit is on GitHub. Back in Claude Code, type `/clear`. Next time: `/start` and the next step.
 
 🎉 That's it: a real project, with its history, safely online.
 
@@ -109,7 +109,7 @@ gh repo view --web
 | A config file "looks fine" but is reported as invalid | an invisible BOM from Word or PowerShell | [Museum 3](mistakes-museum.md#the-word-file-with-an-invisible-character) |
 | Your settings seem to be ignored | the file is `settings.json.txt` | [Museum 4](mistakes-museum.md#the-settings-file-that-was-a-txt) |
 | `BLOCKED by .claude/hooks/guard.mjs: the guardrails … are edited by a human` | Claude tried to change its own rules | Edit the file yourself in a text editor: [Museum 1](mistakes-museum.md#the-agent-that-tried-to-edit-its-own-rules) |
-| Claude repeats itself, forgets decisions, or says the context is almost full | the session is too long | `/relevo`, `/clear`, `/arranque`: [Museum 6](mistakes-museum.md#the-session-that-forgot-everything) |
+| Claude repeats itself, forgets decisions, or says the context is almost full | the session is too long | `/handoff`, `/clear`, `/start`: [Museum 6](mistakes-museum.md#the-session-that-forgot-everything) |
 | `npm.ps1 cannot be loaded because running scripts is disabled on this system` | Windows PowerShell does not run script files by default, and `npm` is one | Type `npm.cmd` instead of `npm`: `npm.cmd test`, `npm.cmd run dr-repo` |
 | `npm test` fails | a check found a real problem | Paste the failing lines to Claude and ask it to explain before fixing |
 

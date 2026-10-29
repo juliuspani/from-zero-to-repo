@@ -18,7 +18,7 @@
 //   - in the shell, a path built at run time (`cd` into a folder and use a relative name, variables,
 //     concatenated strings, symbolic links) is not seen;
 //   - if the hook cannot start at all (node missing, $CLAUDE_PROJECT_DIR not expanded), Claude Code treats
-//     the failure as non-blocking and the call goes on. /arranque checks that the hook is alive.
+//     the failure as non-blocking and the call goes on. /start checks that the hook is alive.
 //   - MCP tools are not in the matcher of settings.json; add them if you install a file-system MCP server.
 
 import { posix, resolve } from 'node:path';

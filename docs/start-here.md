@@ -38,15 +38,15 @@ Every session follows the same loop. It is the whole method in one picture.
 
 ```mermaid
 flowchart LR
-    A["/arranque<br/>read the state"] --> B["work<br/>one step"]
-    B --> C["/relevo<br/>check, write, commit"]
+    A["/start<br/>read the state"] --> B["work<br/>one step"]
+    B --> C["/handoff<br/>check, write, commit"]
     C --> D["/clear<br/>fresh start"]
     D --> A
 ```
 
-- **`/arranque`** ("start-up"): Claude reads `CLAUDE.md`, `PROGRESS.md` and git, tells you where you are, and waits.
+- **`/start`**: Claude reads `CLAUDE.md`, `PROGRESS.md` and git, tells you where you are, and waits.
 - **Work**: one step, small enough to finish in this session.
-- **`/relevo`** ("handoff"): Claude runs the checks, writes the state in `PROGRESS.md` and commits.
+- **`/handoff`**: Claude runs the checks, writes the state in `PROGRESS.md` and commits.
 - **`/clear`**: a clean whiteboard for the next step.
 
 ## Official docs, when you want more

@@ -4,28 +4,28 @@
 
 ## The loop
 
-`/arranque` → one step → `/relevo` → `/clear` → repeat. **One step per session.**
+`/start` → one step → `/handoff` → `/clear` → repeat. **One step per session.**
 
 ## When to use what
 
 | Moment | Type | What happens |
 |---|---|---|
-| You open Claude Code | `/arranque` | Reads the rules, the progress and git; reports in 5 lines; checks the guard is alive; waits |
-| The step is done, or context passes ~60% | `/relevo` | Checks, `PROGRESS.md` updated, commit, push (asks you first) |
-| Right after `/relevo` | `/clear` | Fresh context. Nothing in the repo is lost |
+| You open Claude Code | `/start` | Reads the rules, the progress and git; reports in 5 lines; checks the guard is alive; waits |
+| The step is done, or context passes ~60% | `/handoff` | Checks, `PROGRESS.md` updated, commit, push (asks you first) |
+| Right after `/handoff` | `/clear` | Fresh context. Nothing in the repo is lost |
 | Claude is about to do something you did not ask | `Esc` | Stops it. Then say what you want instead |
 
 The commands live in `.claude/commands/`. If your project does not have them, these are the prompts, ready to
 paste:
 
-**`/arranque`**
+**`/start`**
 ```text
 Read CLAUDE.md, PROGRESS.md (especially the HANDOFF section), git status and git log -5. Do not modify
 anything yet. Summarize in 5 lines where we are, what you will do next, and any inconsistency between
 PROGRESS.md and the repository. Wait for my approval.
 ```
 
-**`/relevo`**
+**`/handoff`**
 ```text
 We are changing step. Do not start new work. 1) Finish the half-done sub-step if it is short, otherwise revert
 it and say so. 2) Run all the checks and report the real result. 3) Update the HANDOFF section of PROGRESS.md:
@@ -41,7 +41,7 @@ Type `/context` to see it. Rule of thumb:
 |---|---|
 | under 40% | Keep going |
 | 40–60% | Finish the current piece; no new big tasks |
-| over 60% | `/relevo` now, write the part you are on ("step 7, part 2 of 3"), `/clear`, continue fresh |
+| over 60% | `/handoff` now, write the part you are on ("step 7, part 2 of 3"), `/clear`, continue fresh |
 
 ## Five habits
 
