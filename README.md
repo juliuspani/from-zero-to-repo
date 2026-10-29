@@ -12,8 +12,9 @@ pushes, and a way of working where every session starts where the last one ended
 
 ## Already have a project? Let Dr. Repo take a look.
 
-Dr. Repo is a read-only check-up: it never changes a file and never touches the network. Inside a copy of this
-repo it is `npm run dr-repo`; for any other project, point it at the folder:
+Dr. Repo is a read-only check-up: it never changes a file, never uses the network and never runs anything from
+the project it examines. Inside a copy of this repo it is `npm run dr-repo`; for any other project, point it at
+the folder (for a project from someone else, `git clone` it rather than copying the folder):
 
 ```bash
 git clone https://github.com/juliuspani/from-zero-to-repo

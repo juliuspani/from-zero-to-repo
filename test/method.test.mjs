@@ -135,3 +135,8 @@ test('skills have a name and a description that says when to use them', () => {
     assert.match(fm.description, /Use (it|this skill) (when|before)/i, `${dir}: the description must say when to use it`);
   }
 });
+
+test('the guides never ask a beginner to weaken an operating system safety setting', () => {
+  const docs = ['docs', 'docs/es'].flatMap((d) => readdirSync(resolve(ROOT, d)).filter((f) => f.endsWith('.md')).map((f) => `${d}/${f}`));
+  for (const file of [...docs, 'README.md']) assert.doesNotMatch(read(file), /Set-ExecutionPolicy/i, file);
+});

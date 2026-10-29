@@ -121,7 +121,7 @@ siguiente.
 | Parece que tus ajustes se ignoran | el archivo es `settings.json.txt` | [Museo 4](mistakes-museum.md#the-settings-file-that-was-a-txt) |
 | `BLOCKED by .claude/hooks/guard.mjs: the guardrails … are edited by a human` | Claude intentó cambiar sus propias reglas | Edita tú el archivo en un editor de texto: [Museo 1](mistakes-museum.md#the-agent-that-tried-to-edit-its-own-rules) |
 | Claude se repite, olvida decisiones o dice que el contexto está casi lleno | la sesión es demasiado larga | `/relevo`, `/clear`, `/arranque`: [Museo 6](mistakes-museum.md#the-session-that-forgot-everything) |
-| `No se puede cargar el archivo …npm.ps1 porque la ejecución de scripts está deshabilitada en este sistema` | Windows PowerShell no ejecuta archivos de script por defecto, y `npm` es uno | Escribe `npm.cmd` en lugar de `npm` (`npm.cmd test`), o permite tus propios scripts una vez: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
+| `No se puede cargar el archivo …npm.ps1 porque la ejecución de scripts está deshabilitada en este sistema` | Windows PowerShell no ejecuta archivos de script por defecto, y `npm` es uno | Escribe `npm.cmd` en lugar de `npm`: `npm.cmd test`, `npm.cmd run dr-repo` |
 | `npm test` falla | una comprobación encontró un problema real | Pega las líneas que fallan a Claude y pídele que lo explique antes de arreglarlo |
 
 ¿Atascado en otra cosa? [Abre una issue](../../../../issues): las preguntas de principiante son bienvenidas.
