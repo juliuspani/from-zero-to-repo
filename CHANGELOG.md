@@ -21,6 +21,22 @@ All notable changes to From Zero to Repo.
   - a short FAQ;
   - the JP seal in the footer, in its 32 px version (thicker marks), dark or light to match GitHub's theme.
 - **The link test also checks** `src`, `srcset` and `href` in the HTML of the Markdown files.
+- **Level 1, step 7, tested on a real Windows machine:**
+  - it now gives the official install command for each system, says it shows no progress and that you need a new
+    terminal, and checks with `claude --version`;
+  - it says the first run logs in through the browser and that Claude Code needs a paid Claude plan (link to the
+    official pricing);
+  - the error table explains `'claude' is not recognized`, with the two PowerShell commands that add `.local\bin` to
+    your user PATH and a link to the official "Fix your PATH";
+  - a note points to the Claude desktop app for those who prefer no terminal;
+  - in English and Spanish.
+- **Mistakes Museum, card 10:** "I installed it, but the terminal still didn't know claude", in English and Spanish.
+
+### Added
+
+- **Dr. Repo notes:** things about your machine, not the project, that never change the score or the exit code. The
+  first one, `claude-on-path`, tells you when no `claude` program is in a PATH folder, and how to fix it. It only looks
+  at file names; it never runs `claude`.
 
 ## [1.0.0] — 2026-10-29
 
