@@ -1,8 +1,8 @@
 {
-  "name": "claude-code-method",
+  "name": "from-zero-to-repo",
   "version": "1.0.0",
   "private": true,
-  "description": "A reusable way of working with Claude Code: one step per context, handoffs, written decisions and rules enforced by code.",
+  "description": "Your first real project with Claude Code — from zero, safely. Beginner guide, a mistakes museum, and a doctor that audits any repo.",
   "license": "MIT",
   "type": "module",
   "engines": {

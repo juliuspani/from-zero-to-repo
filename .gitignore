@@ -12,3 +12,6 @@ data/private/
 .claude/settings.local.json
 
 node_modules/
+
+# Your own tasks from the example CLI.
+todo.json
