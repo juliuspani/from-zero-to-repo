@@ -64,4 +64,6 @@ fallo. El **museo de errores** cuenta los errores reales del proyecto en el que 
 prueba que demuestra que ya no pasan. El **nivel 2** (opcional) añade ruedines para el agente: un hook de
 guarda, permisos y revisores de solo lectura.
 
-Documentación en español: [docs/es/](docs/es/start-here.md). Proyecto comunitario, sin afiliación con Anthropic.
+En español: [Nivel 0: Empieza aquí](docs/es/start-here.md) · [Nivel 1: Tu primera sesión en 10 pasos](docs/es/first-session.md) ·
+[Museo de errores](docs/es/mistakes-museum.md) · [Chuleta](docs/es/cheatsheet.md). El resto (los patrones de prompt y el
+nivel 2) está en inglés. Proyecto comunitario, sin afiliación con Anthropic.
