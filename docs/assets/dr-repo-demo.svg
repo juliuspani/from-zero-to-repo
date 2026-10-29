@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 761 648" width="761" height="648" role="img" aria-labelledby="t d">
+<title id="t">Dr. Repo checking a project with three planted faults</title>
+<desc id="d">A terminal runs &quot;npm run dr-repo -- ../my-old-project&quot;. Dr. Repo prints its diagnosis line by line: ok   .env files are git-ignored; FIX  no .env file is committed; FIX  no secret-looking strings in tracked files; ok   git uses your private GitHub email; ok   CLAUDE.md exists (the rules Claude reads first); ok   PROGRESS.md exists (the memory between sessions); FIX  .claude/settings.json exists and allows nothing risky without asking; ok   a PreToolUse guard hook is wired and its file exists; ok   Claude cannot edit its own settings or hooks; ok   commands, agents and .git are protected too. Then &quot;Score: 7/10&quot; and the suggestion to run again with --prompt.</desc>
+<style>
+text{font:13px ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;fill:#c9d1d9;white-space:pre}
+.bar{font-size:12px;fill:#8b949e}.cmd{fill:#e6edf3}.ps{fill:#3fb950}
+.okm{fill:#3fb950;font-weight:700}.fixm{fill:#f0883e;font-weight:700}.lbl{fill:#8b949e}
+.ok{fill:#adbac7}.fix{fill:#e6edf3}.detail{fill:#f0b072}.how{fill:#c9d1d9}.why{fill:#58a6ff}
+.head{fill:#e6edf3;font-weight:700}.score{fill:#ffffff;font-weight:700}.rx{fill:#56d4dd}
+.l{opacity:0;animation:show 16s infinite backwards}
+.cover{animation:type 16s steps(36) infinite}
+.cursor{animation:blink 1s steps(1) infinite}
+@keyframes show{0%{opacity:0}1%{opacity:1}90%{opacity:1}92%,100%{opacity:0}}
+@keyframes type{0%,3.13%{transform:translateX(0)}11.00%,100%{transform:translateX(281.9px)}}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.l,.cover,.cursor{animation:none}.l{opacity:1}.cover{display:none}}
+</style>
+<rect width="761" height="648" rx="10" fill="#0d1117"/>
+<rect x="0.5" y="0.5" width="760" height="647" rx="10" fill="none" stroke="#30363d"/>
+<circle cx="20" cy="18" r="6" fill="#ff5f56"/><circle cx="40" cy="18" r="6" fill="#ffbd2e"/><circle cx="60" cy="18" r="6" fill="#27c93f"/>
+<text class="bar" x="380.5" y="22" text-anchor="middle">my-old-project — npm run dr-repo</text>
+<line x1="0" y1="34" x2="761" y2="34" stroke="#30363d"/>
+<g transform="translate(20 0)">
+<text y="64"><tspan class="ps">$ </tspan><tspan class="cmd">npm run dr-repo -- ../my-old-project</tspan></text>
+<rect class="cover" x="14.2" y="51" width="293.9" height="18" fill="#0d1117"/>
+<text class="l detail" y="82" style="animation-delay:2.11s"></text>
+<text class="l head" y="100" style="animation-delay:2.22s">Dr. Repo's diagnosis (read-only, no network)</text>
+<text class="l detail" y="118" style="animation-delay:2.33s"></text>
+<text class="l ok" y="136" style="animation-delay:2.44s">  <tspan class="okm">ok</tspan>   .env files are git-ignored</text>
+<text class="l fix" y="154" style="animation-delay:2.55s">  <tspan class="fixm">FIX</tspan>  no .env file is committed</text>
+<text class="l detail" y="172" style="animation-delay:2.66s">        committed: .env</text>
+<text class="l how" y="190" style="animation-delay:2.77s">        <tspan class="lbl">how:</tspan> Untrack it (git rm --cached -- &lt;file&gt;), rotate every key it held, and ignore</text>
+<text class="l how" y="208" style="animation-delay:2.88s">          it.</text>
+<text class="l why" y="226" style="animation-delay:2.99s">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
+<text class="l why" y="244" style="animation-delay:3.10s">          md#the-env-rule-that-blocked-the-wrong-file</text>
+<text class="l fix" y="262" style="animation-delay:3.21s">  <tspan class="fixm">FIX</tspan>  no secret-looking strings in tracked files</text>
+<text class="l detail" y="280" style="animation-delay:3.32s">        config.js:1 (AWS access key)</text>
+<text class="l how" y="298" style="animation-delay:3.43s">        <tspan class="lbl">how:</tspan> Move the value to .env (ignored), read it from the environment, and rotate the</text>
+<text class="l how" y="316" style="animation-delay:3.54s">          key: it is already exposed.</text>
+<text class="l why" y="334" style="animation-delay:3.65s">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
+<text class="l why" y="352" style="animation-delay:3.76s">          md#the-env-rule-that-blocked-the-wrong-file</text>
+<text class="l ok" y="370" style="animation-delay:3.87s">  <tspan class="okm">ok</tspan>   git uses your private GitHub email</text>
+<text class="l ok" y="388" style="animation-delay:3.98s">  <tspan class="okm">ok</tspan>   CLAUDE.md exists (the rules Claude reads first)</text>
+<text class="l ok" y="406" style="animation-delay:4.09s">  <tspan class="okm">ok</tspan>   PROGRESS.md exists (the memory between sessions)</text>
+<text class="l fix" y="424" style="animation-delay:4.20s">  <tspan class="fixm">FIX</tspan>  .claude/settings.json exists and allows nothing risky without asking</text>
+<text class="l detail" y="442" style="animation-delay:4.31s">        settings.json: Bash(*) (any command)</text>
+<text class="l how" y="460" style="animation-delay:4.42s">        <tspan class="lbl">how:</tspan> Start from from-zero-to-repo/.claude/settings.jsonc: push, network, shells and</text>
+<text class="l how" y="478" style="animation-delay:4.53s">          interpreters in &quot;ask&quot;, never a bare Bash; check settings.local.json too.</text>
+<text class="l why" y="496" style="animation-delay:4.64s">        <tspan class="lbl">why:</tspan> https://github.com/juliuspani/from-zero-to-repo/blob/main/docs/mistakes-museum.</text>
+<text class="l why" y="514" style="animation-delay:4.75s">          md#the-settings-file-that-was-a-txt</text>
+<text class="l ok" y="532" style="animation-delay:4.86s">  <tspan class="okm">ok</tspan>   a PreToolUse guard hook is wired and its file exists</text>
+<text class="l ok" y="550" style="animation-delay:4.97s">  <tspan class="okm">ok</tspan>   Claude cannot edit its own settings or hooks</text>
+<text class="l ok" y="568" style="animation-delay:5.08s">  <tspan class="okm">ok</tspan>   commands, agents and .git are protected too</text>
+<text class="l detail" y="586" style="animation-delay:5.19s"></text>
+<text class="l score" y="604" style="animation-delay:5.30s">Score: 7/10</text>
+<text class="l rx" y="622" style="animation-delay:5.41s">Prescription: run again with --prompt to get a prompt for each fix.</text>
+</g>
+</svg>

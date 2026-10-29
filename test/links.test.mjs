@@ -33,7 +33,9 @@ function anchors(file) {
 
 function links(file) {
   const text = prose(readFileSync(join(ROOT, file), 'utf8'));
-  return [...text.matchAll(/\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)].map((m) => m[1]).filter((l) => !/^(https?|mailto):/.test(l));
+  const markdown = [...text.matchAll(/\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g)].map((m) => m[1]);
+  const html = [...text.matchAll(/\s(?:src|srcset|href)="([^"]+)"/g)].map((m) => m[1]); // <img>, <picture> and <a> in the README
+  return [...markdown, ...html].filter((l) => !/^(https?|mailto):/.test(l));
 }
 
 const FILES = markdownFiles();
