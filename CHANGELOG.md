@@ -10,6 +10,7 @@ All notable changes to From Zero to Repo.
   project where the method was born). Neither name is a built-in Claude Code command. If your project was created from
   v1.0.0, rename `.claude/commands/arranque.md` to `start.md` and `relevo.md` to `handoff.md` by hand, or keep the old
   names: nothing else depends on them.
+- **A new social preview** (`docs/assets/social-preview.png`, 1280 × 640), also shown as the header image of the README.
 
 ## [1.0.0] — 2026-10-29
 

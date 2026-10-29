@@ -1,3 +1,5 @@
+![From Zero to Repo: from 0 to repo through /start, build, /handoff and push, with a Dr. Repo checkup. Your first real project with Claude Code, wired for safety.](docs/assets/social-preview.png)
+
 **English** · [Español](#resumen-en-español)
 
 # From Zero to Repo
