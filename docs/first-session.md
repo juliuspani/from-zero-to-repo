@@ -20,7 +20,7 @@ git --version
 ```
 ✅ Prints something like `git version 2.x`.
 
-**2. Install Node.js (version 20 or later).** *The tests, the doctor and the example run on it.*
+**2. Install Node.js (version 20 or later).** *The tests, Dr. Repo and the example run on it.*
 [nodejs.org](https://nodejs.org/) → the **LTS** installer.
 
 ```bash
@@ -60,9 +60,9 @@ cd my-first-project
 
 ```bash
 npm test
-node doctor.mjs
+npm run dr-repo
 ```
-✅ `npm test` ends with `fail 0`; the doctor says `Score: 10/10`.
+✅ `npm test` ends with `fail 0`; Dr. Repo says `Score: 10/10`.
 
 **7. Install Claude Code and open it in the project.** *The agent, inside your folder.*
 Follow [the official setup](https://docs.claude.com/en/docs/claude-code/setup) (you need a Claude account), then,

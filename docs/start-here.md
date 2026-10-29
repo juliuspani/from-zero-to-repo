@@ -30,7 +30,7 @@ deleting the file later does not help: git remembers every version. The only fix
 (create a new one, kill the old one).
 
 So: `.env` goes in `.gitignore` from day one, and Claude is not even allowed to read it. This template does
-both for you. The [doctor](../README.md#already-have-a-project-run-the-doctor) checks it in any project.
+both for you. [Dr. Repo](../README.md#already-have-a-project-let-dr-repo-take-a-look) checks it in any project.
 
 ## The cycle of a session
 

@@ -4,7 +4,7 @@
 
 Real mistakes from building a real project with Claude Code, from a student who had never used git before.
 Each card: **what happened · why · what prevents it now · the proof**. The proof is a test you can run with
-`npm test`, or the [doctor](../doctor.mjs) check that spots it in your own project.
+`npm test`, or the [Dr. Repo](../dr-repo.mjs) check that spots it in your own project.
 
 Seen a mistake that deserves a card? [Open an issue](../../../issues).
 
@@ -22,7 +22,7 @@ any permission. Annoying in the moment, but the classifier was right.
 **What prevents it now.** The guard hook and the `deny` rules block every write to `.claude/settings*`,
 `.claude/hooks/`, `.claude/commands/` and `.claude/agents/`. Claude proposes the change; you paste it.
 
-**Proof.** `test/guard.test.mjs` → *"Claude may read its guardrails but never change them"*. Doctor:
+**Proof.** `test/guard.test.mjs` → *"Claude may read its guardrails but never change them"*. Dr. Repo:
 `guardrails-locked`.
 
 ---
@@ -40,7 +40,7 @@ because `git diff` "only reads". It also found `git commit -n` (skips git hooks)
 **What prevents it now.** Each finding became a test that failed first, then the fix. Any shell command that
 mentions `.claude` must be a known read-only command with no output options.
 
-**Proof.** `test/guard.test.mjs` → the tests named *S-01* to *S-12*. Doctor: `claude-dir-locked`.
+**Proof.** `test/guard.test.mjs` → the tests named *S-01* to *S-12*. Dr. Repo: `claude-dir-locked`.
 
 ---
 
@@ -56,7 +56,7 @@ said it was broken.
 **What prevents it now.** Edit code and config only in a plain-text editor (VS Code, Notepad++, nano) and save as
 **UTF-8 without BOM**. In VS Code, the status bar shows the encoding; click it to change.
 
-**Proof.** The doctor reports a `settings.json` it cannot parse as `settings-safe` failing ("not valid JSON").
+**Proof.** Dr. Repo reports a `settings.json` it cannot parse as `settings-safe` failing ("not valid JSON").
 
 ---
 
@@ -70,7 +70,7 @@ said it was broken.
 **What prevents it now.** Turn on file extensions (File Explorer → View → Show → File name extensions), or check
 with `ls .claude` (`dir .claude` on Windows).
 
-**Proof.** Doctor: `settings-safe` reports "settings saved as .txt". `test/doctor.test.mjs` plants one.
+**Proof.** Dr. Repo: `settings-safe` reports "settings saved as .txt". `test/dr-repo.test.mjs` plants one.
 
 ---
 
@@ -86,7 +86,7 @@ email. Every commit carries the author's email, forever, in public.
 `git config --global user.email "<id>+<user>@users.noreply.github.com"`, then redo the commits that are not
 pushed yet (`git commit --amend --reset-author --no-edit` for the last one).
 
-**Proof.** Doctor: `git-email`.
+**Proof.** Dr. Repo: `git-email`.
 
 ---
 
@@ -102,7 +102,7 @@ summarized or lost, and quality drops before it is visibly full.
 **What prevents it now.** One step per session. Before ~60% of context, run `/relevo`: it writes the state to
 `PROGRESS.md` and commits. Then `/clear`, and `/arranque` in the fresh session.
 
-**Proof.** `test/method.test.mjs` → *"PROGRESS.md stays under 200 lines"*. Doctor: `claude-md`, `progress-md`.
+**Proof.** `test/method.test.mjs` → *"PROGRESS.md stays under 200 lines"*. Dr. Repo: `claude-md`, `progress-md`.
 
 ---
 
@@ -133,7 +133,7 @@ the harmless template that lists variable *names*.
 and allows `.env.example` only with names and no values. `.gitignore` ignores them all.
 
 **Proof.** `test/guard.test.mjs` → *"never reads or writes .env files, but allows names-only .env.example"*.
-Doctor: `env-ignored`, `env-tracked`, `secrets`.
+Dr. Repo: `env-ignored`, `env-tracked`, `secrets`.
 
 ---
 

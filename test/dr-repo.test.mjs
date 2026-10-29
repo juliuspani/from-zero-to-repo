@@ -7,15 +7,15 @@ import { join, resolve } from 'node:path';
 import { after, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { CHECKS, isEnvFile } from '../doctor.mjs';
+import { CHECKS, isEnvFile } from '../dr-repo.mjs';
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '..', '..');
-const DOCTOR = join(ROOT, 'doctor.mjs');
+const DR_REPO = join(ROOT, 'dr-repo.mjs');
 const temps = [];
 after(() => temps.forEach((d) => rmSync(d, { recursive: true, force: true })));
 
 function tempDir() {
-  const dir = mkdtempSync(join(tmpdir(), 'doctor-'));
+  const dir = mkdtempSync(join(tmpdir(), 'dr-repo-'));
   temps.push(dir);
   return dir;
 }
@@ -28,18 +28,18 @@ function gitEnv(email) {
   return { ...process.env, GIT_CONFIG_GLOBAL: global, GIT_CONFIG_NOSYSTEM: '1' };
 }
 
-function runDoctor(path, env, ...flags) {
-  return spawnSync(process.execPath, [DOCTOR, path, ...flags], { encoding: 'utf8', env });
+function runDrRepo(path, env, ...flags) {
+  return spawnSync(process.execPath, [DR_REPO, path, ...flags], { encoding: 'utf8', env });
 }
 
 const sh = (cwd, env, ...args) => execFileSync('git', args, { cwd, env, stdio: 'ignore' });
 
-/** A project with every fault the doctor knows, planted on purpose. */
+/** A project with every fault Dr. Repo knows, planted on purpose. */
 function sickProject(env) {
   const dir = tempDir();
   sh(dir, env, 'init', '-q');
   writeFileSync(join(dir, '.env'), 'API_KEY=not-a-real-key\n');
-  // Built at run time so that no scanner (nor the doctor on this repository) sees a key in this file.
+  // Built at run time so that no scanner (nor Dr. Repo on this repository) sees a key in this file.
   writeFileSync(join(dir, 'config.js'), `const aws = '${'AKIA'}${'ABCDEFGHIJKLMNOP'}';\n`);
   mkdirSync(join(dir, '.claude'));
   writeFileSync(join(dir, '.claude', 'settings.json'), JSON.stringify({
@@ -67,19 +67,21 @@ function snapshot(dir) {
 }
 
 test('this repository gets the maximum score', () => {
-  const r = runDoctor(ROOT, gitEnv('1+someone@users.noreply.github.com'));
+  const r = runDrRepo(ROOT, gitEnv('1+someone@users.noreply.github.com'));
   assert.equal(r.status, 0, r.stdout);
   assert.match(r.stdout, new RegExp(`Score: ${CHECKS.length}/${CHECKS.length}`));
+  assert.match(r.stdout, /Dr. Repo's diagnosis/);
+  assert.match(r.stdout, /Clean bill of health/);
 });
 
 test('a project with planted faults fails every check', () => {
   const env = gitEnv('someone@example.com');
-  const r = runDoctor(sickProject(env), env, '--prompt');
+  const r = runDrRepo(sickProject(env), env, '--prompt');
   assert.equal(r.status, 1);
   assert.match(r.stdout, new RegExp(`Score: 0/${CHECKS.length}`), r.stdout);
   for (const check of CHECKS) assert.ok(r.stdout.includes(check.title), check.id);
   assert.match(r.stdout, /config\.js:1 \(AWS access key\)/);
-  assert.ok(!r.stdout.includes('ABCDEFGHIJKLMNOP'), 'the doctor must never print a secret value');
+  assert.ok(!r.stdout.includes('ABCDEFGHIJKLMNOP'), 'Dr. Repo must never print a secret value');
   assert.match(r.stdout, /paste in Claude Code: "/);
   assert.match(r.stdout, /mistakes-museum\.md#/);
 });
@@ -89,25 +91,25 @@ test('missing email, settings saved as .txt and a folder that is not a repositor
   const dir = tempDir();
   mkdirSync(join(dir, '.claude'));
   writeFileSync(join(dir, '.claude', 'settings.json.txt'), '{}');
-  const r = runDoctor(dir, env);
+  const r = runDrRepo(dir, env);
   assert.equal(r.status, 1);
   assert.match(r.stdout, /not a git repository/);
   assert.match(r.stdout, /saved as \.txt/);
   assert.match(r.stdout, /no user\.email/);
 });
 
-test('the doctor changes nothing, not even inside .git, and ignores a hostile fsmonitor', () => {
+test('Dr. Repo changes nothing, not even inside .git, and ignores a hostile fsmonitor', () => {
   const env = gitEnv('someone@example.com');
   const dir = sickProject(env);
   sh(dir, env, 'config', 'core.fsmonitor', 'echo pwned > PWNED');
   const before = snapshot(dir);
-  runDoctor(dir, env);
-  runDoctor(dir, env, '--prompt');
+  runDrRepo(dir, env);
+  runDrRepo(dir, env, '--prompt');
   assert.deepEqual(snapshot(dir), before);
 });
 
 test('the source has no way to write, delete or reach the network', () => {
-  const src = readFileSync(DOCTOR, 'utf8');
+  const src = readFileSync(DR_REPO, 'utf8');
   const imports = [...src.matchAll(/^import .* from '([^']+)';$/gm)].map((m) => m[1]).sort();
   assert.deepEqual(imports, ['node:child_process', 'node:fs', 'node:path', 'node:url']);
   for (const forbidden of [/writeFile|appendFile|createWriteStream|mkdir|rmSync|rmdir|unlink|rename|copyFile|chmod|truncate|symlink/, /\bfetch\(|node:https?|node:net|node:dgram|node:tls|WebSocket/, /\bspawn\(|\bexec\(|execSync\(|fork\(/]) {

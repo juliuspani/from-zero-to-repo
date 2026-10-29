@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// The doctor: a read-only safety check-up for any project you work on with Claude Code.
+// Dr. Repo: a read-only safety check-up for any project you work on with Claude Code.
 //
-//   node doctor.mjs [path] [--prompt]
+//   node dr-repo.mjs [path] [--prompt]      (or: npm run dr-repo)
 //
 // It never modifies anything and never uses the network. It reads files, and asks git four read-only
 // questions (rev-parse, ls-files, check-ignore, config --get) with fsmonitor and hooks switched off, so a
-// hostile repository cannot make it run a program. test/doctor.test.mjs checks both promises.
+// hostile repository cannot make it run a program. test/dr-repo.test.mjs checks both promises.
 // Exit code: 0 when every check passes, 1 otherwise, 2 if the path does not exist.
 
 import { execFileSync } from 'node:child_process';
@@ -115,7 +115,7 @@ export const CHECKS = [
       return bad.length === 0 ? { ok: true } : { ok: false, detail: `committed: ${bad.join(', ')}` };
     },
     fix: 'Untrack it (git rm --cached <file>), rotate every key it held, and ignore it.',
-    prompt: 'Run git rm --cached on each committed .env file the doctor listed, without opening or printing them, add them to .gitignore, and commit. Then list which services I must rotate keys for, by variable name only. Remind me that the old values stay in git history until I rewrite it.',
+    prompt: 'Run git rm --cached on each committed .env file Dr. Repo listed, without opening or printing them, add them to .gitignore, and commit. Then list which services I must rotate keys for, by variable name only. Remind me that the old values stay in git history until I rewrite it.',
     museum: 'the-env-rule-that-blocked-the-wrong-file',
   },
   {
@@ -140,7 +140,7 @@ export const CHECKS = [
       return hits.length === 0 ? { ok: true } : { ok: false, detail: hits.slice(0, 10).join(', ') + (hits.length > 10 ? ` and ${hits.length - 10} more` : '') };
     },
     fix: 'Move the value to .env (ignored), read it from the environment, and rotate the key: it is already exposed.',
-    prompt: 'For each file:line the doctor listed, replace the hard-coded value with a read from an environment variable and add the variable name, without a value, to .env.example. Never print the secret values in the chat or in commit messages. Then tell me which keys to rotate.',
+    prompt: 'For each file:line Dr. Repo listed, replace the hard-coded value with a read from an environment variable and add the variable name, without a value, to .env.example. Never print the secret values in the chat or in commit messages. Then tell me which keys to rotate.',
     museum: 'the-env-rule-that-blocked-the-wrong-file',
   },
   {
@@ -242,7 +242,7 @@ export function examine(root) {
 
 function report(results, withPrompt) {
   const passed = results.filter((r) => r.result.ok).length;
-  const lines = ['', 'Doctor check-up (read-only, no network)', ''];
+  const lines = ['', "Dr. Repo's diagnosis (read-only, no network)", ''];
   for (const r of results) {
     lines.push(`${r.result.ok ? '  ok  ' : '  FIX '} ${r.title}`);
     if (r.result.ok) continue;
@@ -252,7 +252,8 @@ function report(results, withPrompt) {
     if (withPrompt) lines.push(`        paste in Claude Code: "${r.prompt}"`);
   }
   lines.push('', `Score: ${passed}/${results.length}`);
-  if (passed < results.length && !withPrompt) lines.push('Run again with --prompt to get a prompt for each fix.');
+  if (passed === results.length) lines.push('Clean bill of health. See you next check-up.');
+  else if (!withPrompt) lines.push('Prescription: run again with --prompt to get a prompt for each fix.');
   lines.push('');
   return lines.join('\n');
 }
@@ -262,7 +263,7 @@ function main(argv) {
   const target = argv.find((a) => !a.startsWith('--')) ?? '.';
   const root = resolve(target);
   if (!existsSync(root) || !statSync(root).isDirectory()) {
-    process.stderr.write(`doctor: ${target} is not a folder\n`);
+    process.stderr.write(`dr-repo: ${target} is not a folder\n`);
     return 2;
   }
   const results = examine(root);

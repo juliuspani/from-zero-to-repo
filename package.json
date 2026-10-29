@@ -2,7 +2,7 @@
   "name": "from-zero-to-repo",
   "version": "1.0.0",
   "private": true,
-  "description": "Your first real project with Claude Code — from zero, safely. Beginner guide, a mistakes museum, and a doctor that audits any repo.",
+  "description": "Your first real project with Claude Code — from zero, safely. Beginner guide, a mistakes museum, and Dr. Repo, a checkup for any repo.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -11,6 +11,6 @@
   "scripts": {
     "test": "node --test",
     "settings": "node scripts/settings.mjs",
-    "doctor": "node doctor.mjs"
+    "dr-repo": "node dr-repo.mjs"
   }
 }

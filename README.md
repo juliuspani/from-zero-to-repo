@@ -1,3 +1,5 @@
+**English** · [Español](#resumen-en-español)
+
 # From Zero to Repo
 
 **Your first real project with Claude Code, safely.**
@@ -8,12 +10,14 @@ Never used git, GitHub or Claude Code? This takes you from nothing installed to 
 AI agent that works inside rules it cannot break. At the end you will have your own repository, your first
 pushes, and a way of working where every session starts where the last one ended.
 
-## Already have a project? Run the doctor
+## Already have a project? Let Dr. Repo take a look.
 
-A read-only check-up that never changes a file or touches the network:
+Dr. Repo is a read-only check-up: it never changes a file and never touches the network. Inside a copy of this
+repo it is `npm run dr-repo`; for any other project, point it at the folder:
 
 ```bash
-node doctor.mjs path/to/your/project --prompt
+git clone https://github.com/juliuspani/from-zero-to-repo
+node from-zero-to-repo/dr-repo.mjs path/to/your/project --prompt
 ```
 
 It scores 10 protections (secrets, git email, rules for the agent, guardrails), and for each one that is
@@ -54,8 +58,8 @@ Anthropic's products, used here only to say what this guide is about.
 ## Resumen en español
 
 **From Zero to Repo** te lleva de no tener nada instalado a tu primer proyecto real con Claude Code, publicado y
-seguro. Funciona con un ciclo sencillo: `/arranque` → un paso → `/relevo` → `/clear`. El **doctor**
-(`node doctor.mjs <ruta> --prompt`) revisa cualquier proyecto sin cambiar nada y te dice cómo arreglar cada
+seguro. Funciona con un ciclo sencillo: `/arranque` → un paso → `/relevo` → `/clear`. **Dr. Repo**
+(`node dr-repo.mjs <ruta> --prompt`) revisa cualquier proyecto sin cambiar nada y te dice cómo arreglar cada
 fallo. El **museo de errores** cuenta los errores reales del proyecto en el que nació este método, con la
 prueba que demuestra que ya no pasan. El **nivel 2** (opcional) añade ruedines para el agente: un hook de
 guarda, permisos y revisores de solo lectura.

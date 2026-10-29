@@ -12,12 +12,12 @@ Everything below is already in this template. This page explains what each piece
 
 If you created your repository from this template, it is already set up. To add it to an existing project:
 
-1. Copy the files into your project (run `node doctor.mjs` first and after, to see what changed):
+1. Copy the files into your project (run `node dr-repo.mjs` first and after, to see what changed):
 
    ```text
    CLAUDE.md                 PROGRESS.md
    .claude/                  docs/
-   templates/                test/  scripts/  doctor.mjs  (optional: the checks)
+   templates/                test/  scripts/  dr-repo.mjs  (optional: the checks)
    ```
 
 2. Fill the `<placeholders>` in `CLAUDE.md` and `PROGRESS.md`. Adapt `PROTECTED` in
@@ -44,8 +44,8 @@ If you created your repository from this template, it is already set up. To add 
 | [`templates/`](../templates/) | Templates for a skill and for a new consultant. |
 | [`docs/adr/`](adr/) | The ADR template and a first example ADR that records the method itself. |
 | [`docs/progress/`](progress/) | Where old handoffs and approved decisions go, so `PROGRESS.md` stays short without losing anything. |
-| [`test/`](../test/) | The method checked by code: the guard's behaviour, the 200-line cap, consultant rules, settings drift, ADR numbering, skill descriptions, and that the doctor never writes or uses the network. |
-| [`doctor.mjs`](../doctor.mjs) | The read-only check-up that scores any project on these protections. |
+| [`test/`](../test/) | The method checked by code: the guard's behaviour, the 200-line cap, consultant rules, settings drift, ADR numbering, skill descriptions, and that Dr. Repo never writes or uses the network. |
+| [`dr-repo.mjs`](../dr-repo.mjs) | Dr. Repo, the read-only check-up that scores any project on these protections. |
 
 The two commands keep their Spanish names from the original project. Rename the files if you prefer
 `/start` and `/handoff`; nothing else depends on the names.
