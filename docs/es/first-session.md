@@ -99,13 +99,14 @@ claude
 en esta carpeta. Di que sí: es tuya.
 
 > **¿Prefieres una app?** La [app de escritorio de Claude](https://code.claude.com/docs/en/desktop-quickstart) usa
-> Claude Code sin terminal. Esta guía usa la terminal, para que cada paso sea igual en Windows, macOS y Linux.
+> Claude Code sin terminal. Esta guía usa la terminal: los mismos pasos en todas partes, y Windows tiene dos notas
+> extra (`npm.cmd` y PATH, en [la tabla del final](#si-ves-este-error)).
 
 **8. Empieza la sesión y dale un primer paso.** *Un cambio pequeño y real.*
 Escribe `/start`. Claude resume dónde está el proyecto y comprueba que el hook de guarda está vivo (debe
 informar de una lectura de prueba **BLOCKED**). También verá que `CLAUDE.md` y `PROGRESS.md` aún tienen
-`<placeholders>`: es normal el primer día, y `/handoff` rellena `PROGRESS.md` por ti. Después pega el primer
-paso del [ejemplo](../../examples/todo-cli/README.md), o esta misma versión en español:
+`<placeholders>`: es normal el primer día, y `/handoff` rellena `PROGRESS.md` por ti. Después pega este primer
+paso, la versión en español del [ejemplo](../../examples/todo-cli/README.md):
 
 ```text
 Paso 1: añade un comando "done <número>" a examples/todo-cli/todo.mjs que marque esa tarea como terminada.
@@ -119,8 +120,10 @@ Paso 1: añade un comando "done <número>" a examples/todo-cli/todo.mjs que marq
 `fail 0`.
 
 **9. Haz el relevo.** *Guardar el estado, hacer commit y push.*
-Escribe `/handoff`. Claude ejecuta las comprobaciones, actualiza `PROGRESS.md`, hace el commit y el push. El
-push te pide permiso: es la red de seguridad funcionando, di que sí.
+Escribe `/handoff`. Claude ejecuta las comprobaciones, actualiza `PROGRESS.md` y hace el commit. Antes del push,
+Claude Code se para y te pide permiso: muestra el comando (`git push`) y pregunta si lo ejecuta, con opciones como
+**Yes**, **Yes, and don't ask again** y **No** (el texto exacto depende de tu versión de Claude Code). Elige
+**Yes** a secas: así el próximo push vuelve a preguntar, y esa pregunta es tu red de seguridad.
 
 ✅ `git status` dice "nothing to commit, working tree clean".
 
@@ -159,10 +162,15 @@ El instalador pone `claude.exe` en `.local\bin`, dentro de tu carpeta de usuario
 Test-Path "$HOME\.local\bin\claude.exe"
 ```
 
-`True`: añade esa carpeta al PATH de tu usuario, una sola vez:
+`True`: añade esa carpeta al PATH de tu usuario. Pega las cinco líneas juntas; solo añaden la carpeta si aún no está,
+así que ejecutarlas dos veces no hace daño:
 
 ```powershell
-[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path","User") + ";$HOME\.local\bin", "User")
+$bin = "$HOME\.local\bin"
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ";" | ForEach-Object { $_.TrimEnd("\") }) -notcontains $bin) {
+  [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin".Trim(";"), "User")
+}
 ```
 
 Después cierra todas las ventanas de terminal, abre una nueva y ejecuta `claude --version`. `False`: la instalación no

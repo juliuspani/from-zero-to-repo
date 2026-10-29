@@ -371,7 +371,7 @@ export const NOTES = [
       }
       return { ok: false, detail: 'a terminal will answer "claude is not recognized"; the Claude desktop app does not need it' };
     },
-    fix: 'open a new terminal; on Windows, if Test-Path "$HOME\\.local\\bin\\claude.exe" says True, add $HOME\\.local\\bin to your user PATH (Level 1, step 7).',
+    fix: 'open a new terminal; on Windows, if Test-Path "$HOME\\.local\\bin\\claude.exe" says True, add $HOME\\.local\\bin to your user PATH (Level 1, "If you see this error").',
     museum: 'the-terminal-that-did-not-know-claude',
   },
 ];

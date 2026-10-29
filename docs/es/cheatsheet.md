@@ -52,4 +52,4 @@ Escribe `/context` para verlo. Regla práctica:
 4. **Nunca pegues secretos** en el chat ni en archivos que no estén ignorados.
 5. **Lee el diff** antes de aceptar un commit: `git diff`.
 
-Más: [Prompts que funcionaron](../prompt-patterns.md) (en inglés) · [Museo de errores](mistakes-museum.md)
+Más: [Prompts que funcionaron](../prompt-patterns.md) (en inglés) · [Museo de errores](mistakes-museum.md) · [Level 2 — Training Wheels](../level-2.md) (en inglés)

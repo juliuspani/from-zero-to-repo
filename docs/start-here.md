@@ -2,8 +2,8 @@
 
 # Level 0: Start here
 
-Twelve words you will hear all the time, explained like a friend would. Five minutes. When you want the full
-story, each one links to the official docs.
+Fifteen words you will hear all the time, explained like a friend would. Five minutes. When you want the full
+story, the official docs are linked at the end.
 
 | Word | In plain words | Everyday example |
 |---|---|---|
@@ -15,10 +15,13 @@ story, each one links to the official docs.
 | **README** | The front page of your repo: what it is and how to use it. | The back cover of a book. |
 | **`CLAUDE.md`** | The rules Claude reads at the start of every session in this project. | The note you leave the babysitter on the fridge. |
 | **`PROGRESS.md`** | Where you are, what is done and what comes next. Claude's memory between sessions. | The bookmark, plus a sticky note saying "stopped at chapter 4, the twist is coming". |
-| **Context** | Claude's working memory for one conversation. It fills up as you talk. | A whiteboard: when it is full, old notes get erased to make room. |
+| <a id="word-context"></a>**Context** | Claude's working memory for one conversation. It fills up as you talk. | A whiteboard: when it is full, old notes get erased to make room. |
 | **`/clear`** | Wipes the conversation and starts fresh. Files and commits are untouched. | Cleaning the whiteboard. The notebook (your repo) keeps everything. |
-| **Hook** | A small script that runs before Claude uses a tool, and can say "no". | A bouncer checking every guest at the door. |
+| <a id="word-hook"></a>**Hook** (guard hook) | A small script that runs before Claude uses a tool, and can say "no". This template's is the *guard hook*. | A bouncer checking every guest at the door. |
 | **Permissions** | Lists of what Claude may do freely (`allow`), only after asking you (`ask`) or never (`deny`). | House rules: snacks yes, the car only if you ask, the safe never. |
+| <a id="word-guardrails"></a>**Guardrails** | The files that set what Claude may do: `.claude/settings.json`, the hook, the commands and the agents. Claude may read them; you edit them. | The house rules on the fridge: the babysitter follows them, but does not rewrite them. |
+| <a id="word-secret"></a>**Secret** | Anything that lets someone act as you: passwords, API keys, tokens. Usually kept in a file called `.env`. | Your house key: you do not post a photo of it. |
+| <a id="word-noreply-email"></a>**Private (noreply) email** | An address GitHub gives you, like `12345+you@users.noreply.github.com`, so your commits do not show your real email. | A P.O. box instead of your home address. |
 
 ## Why you never upload secrets
 

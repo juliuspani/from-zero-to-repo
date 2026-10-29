@@ -98,19 +98,30 @@ claude
 folder. Say yes: it is yours.
 
 > **Prefer an app?** The [Claude desktop app](https://code.claude.com/docs/en/desktop-quickstart) runs Claude Code
-> without the terminal. This guide uses the terminal, so every step looks the same on Windows, macOS and Linux.
+> without the terminal. This guide uses the terminal: the same steps everywhere, and Windows has two extra notes
+> (`npm.cmd` and PATH, in [the table at the end](#if-you-see-this-error)).
 
 **8. Start the session and give it a first step.** *One small, real change.*
 Type `/start`. Claude summarizes where the project is and checks that the guard hook is alive (it should
 report a **BLOCKED** test read). It will also notice that `CLAUDE.md` and `PROGRESS.md` still have
-`<placeholders>`: normal on day one, and `/handoff` fills `PROGRESS.md` for you. Then paste the first step from
-[the example](../examples/todo-cli/README.md).
+`<placeholders>`: normal on day one, and `/handoff` fills `PROGRESS.md` for you. Then paste this first step, from
+[the example](../examples/todo-cli/README.md):
+
+```text
+Step 1: add a "done <number>" command to examples/todo-cli/todo.mjs that marks that task as finished.
+- Write the test first in examples/todo-cli/todo.test.mjs and show me that it fails.
+- Then make it pass. A number that does not exist must give a clear error, not a crash.
+- Run npm test. Only these two files may change.
+- Close the step as CLAUDE.md §3 says, and stop. Do not start anything else.
+```
 
 ✅ Claude shows a test failing, then passing, and stops to wait for you. `npm test` still ends with `fail 0`.
 
 **9. Hand off.** *Save the state, commit and push.*
-Type `/handoff`. Claude runs the checks, updates `PROGRESS.md`, commits and pushes. Pushing asks for your
-permission: that is the safety net working, say yes.
+Type `/handoff`. Claude runs the checks, updates `PROGRESS.md` and commits. Before pushing, Claude Code stops and
+asks your permission: it shows the command (`git push`) and asks whether to run it, with choices like **Yes**,
+**Yes, and don't ask again** and **No** (the exact words depend on your Claude Code version). Choose plain **Yes**:
+then the next push asks again, and that question is your safety net.
 
 ✅ `git status` says "nothing to commit, working tree clean".
 
@@ -148,10 +159,15 @@ The installer puts `claude.exe` in `.local\bin` inside your user folder. Check t
 Test-Path "$HOME\.local\bin\claude.exe"
 ```
 
-`True`: add that folder to your user PATH, once:
+`True`: add that folder to your user PATH. Paste the five lines together; they only add the folder if it is not
+there yet, so running them twice does no harm:
 
 ```powershell
-[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path","User") + ";$HOME\.local\bin", "User")
+$bin = "$HOME\.local\bin"
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+if (($userPath -split ";" | ForEach-Object { $_.TrimEnd("\") }) -notcontains $bin) {
+  [Environment]::SetEnvironmentVariable("Path", "$userPath;$bin".Trim(";"), "User")
+}
 ```
 
 Then close every terminal window, open a new one, and run `claude --version`. `False`: the install did not finish;

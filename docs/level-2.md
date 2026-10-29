@@ -1,10 +1,11 @@
 [← Back to the README](../README.md)
 
-# Level 2: Training Wheels for your agent
+# Level 2 — Training Wheels
 
 **Optional.** Levels 0 and 1 are enough to build and publish your first project. Come here when you want the
-agent itself to have guardrails: rules it cannot break, reviewers it cannot sway, and a memory that survives
-every session. Training wheels for the agent, not only for you.
+agent itself to have guardrails: rules it is blocked from editing, reviewers that can only read, and a memory that
+survives every session. Training wheels for the agent, not only for you, and like training wheels they catch the
+usual falls, not every fall: [know their limits](#limits).
 
 Everything below is already in this template. This page explains what each piece does and why.
 
@@ -38,7 +39,7 @@ If you created your repository from this template, it is already set up. To add 
 | [`.claude/commands/handoff.md`](../.claude/commands/handoff.md) | `/handoff`: finish or revert the half-done part, run the checks, write the HANDOFF, commit, push. |
 | [`.claude/agents/`](../.claude/agents/) | Two read-only consultants (security, software) with no shell, no write tools and no subagents. |
 | [`docs/CONSULTANTS.md`](CONSULTANTS.md) | When and how to use the consultants, their shared rules, severity scale, report format, and what the tooling does and does not guarantee. |
-| [`.claude/hooks/guard.mjs`](../.claude/hooks/guard.mjs) | Example `PreToolUse` guard: blocks access to environment files and protected paths, destructive commands, skipping git hooks, and any edit to the guardrails themselves (settings, hooks, commands, agents, `.git/config`, `.git/hooks`). Its header lists what it cannot see. |
+| [`.claude/hooks/guard.mjs`](../.claude/hooks/guard.mjs) | Example `PreToolUse` guard: blocks access to environment files and protected paths, recursive forced deletes, forced pushes, `git reset --hard`, skipping git hooks, and any edit to the guardrails themselves (settings, hooks, commands, agents, `.git/config`, `.git/hooks`). Its header lists what it cannot see. |
 | [`.claude/settings.jsonc`](../.claude/settings.jsonc) | The permission lists (`allow`, `ask`, `deny`) and the hook, with every choice commented. [`settings.json`](../.claude/settings.json) is the same without comments; a test keeps them equal. |
 | [`.claude/skills/engineering-standard/`](../.claude/skills/engineering-standard/SKILL.md) | An example skill: the engineering standard (scope, commits, tests, checks, context, splitting work). |
 | [`templates/`](../templates/) | Templates for a skill and for a new consultant. |
@@ -101,6 +102,9 @@ mechanism that fails on its own:
 | Hook | `.claude/hooks/guard.mjs` | Spellings the permission prefixes miss (`rm -fr`, `Remove-Item -r -fo`, `git push -uf`, `git commit -n`, `data/./private`), protected paths, and any shell or file write to the guardrails |
 | Tests | `test/` | The hook's behaviour, drift between files that must agree, the 200-line cap, read-only consultants, ADR numbering |
 | Git hooks and CI | your own `pre-commit`, secrets scan and CI | The included `ci.yml` only runs this template's tests. Lint, types and a secrets scan are your project's to add |
+
+<a id="limits"></a>
+#### Limits: what the guard does not catch
 
 Each layer has holes; together they turn the most likely mistakes into a blocked call with a clear message.
 Know the holes, because believing in a guard you do not have is worse than having none:

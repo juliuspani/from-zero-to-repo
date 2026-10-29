@@ -19,8 +19,9 @@ its own safety classifier flagged editing `.claude/` as *self-modification*. I h
 **Why.** The files in `.claude/` decide what the agent may do. An agent that can rewrite them can give itself
 any permission. Annoying in the moment, but the classifier was right.
 
-**What prevents it now.** The guard hook and the `deny` rules block every write to `.claude/settings*`,
-`.claude/hooks/`, `.claude/commands/` and `.claude/agents/`. Claude proposes the change; you paste it.
+**What prevents it now.** The guard hook and the `deny` rules block Claude's writes to `.claude/settings*`,
+`.claude/hooks/`, `.claude/commands/` and `.claude/agents/`, within [the hook's limits](level-2.md#limits). Claude
+proposes the change; you paste it.
 
 **Proof.** `test/guard.test.mjs` → *"Claude may read its guardrails but never change them"*. Dr. Repo:
 `guardrails-locked`.
@@ -129,8 +130,9 @@ the harmless template that lists variable *names*.
 
 **Why.** Wildcards are greedy. And secrets hide under other names too: `prod.env`, `.envrc`.
 
-**What prevents it now.** `deny` lists the usual variants one by one; the hook covers every other environment file
-and allows `.env.example` only with names and no values. `.gitignore` ignores them all.
+**What prevents it now.** `deny` lists the usual variants one by one; the hook also blocks the other environment file
+names it knows (`.env.*`, `*.env`, `.envrc`) and allows `.env.example` only with names and no values. `.gitignore`
+ignores the same names.
 
 **Proof.** `test/guard.test.mjs` → *"never reads or writes .env files, but allows names-only .env.example"*.
 Dr. Repo: `env-ignored`, `env-tracked`, `secrets`.

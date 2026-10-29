@@ -48,7 +48,7 @@ come back quietly. This is how the guard in this repo was hardened ([Museum 2](m
 ✅ *"Launch consultant-security (read-only) on the diff since abc123. It must cite file:line for each finding and propose commands instead of running them. Do not fix anything in this step."*
 
 **Why.** A reviewer that can edit tends to fix quietly and report less. Read-only keeps the report honest,
-and you decide what gets fixed. See [Level 2](level-2.md#read-only-consultants).
+and you decide what gets fixed. See [Level 2 — Training Wheels](level-2.md#read-only-consultants).
 
 ## 6. Stop on doubt instead of guessing
 

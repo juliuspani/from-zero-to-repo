@@ -51,4 +51,4 @@ Type `/context` to see it. Rule of thumb:
 4. **Never paste secrets** into the chat or into files that are not ignored.
 5. **Read the diff** before saying yes to a commit: `git diff`.
 
-More: [Prompts that worked](prompt-patterns.md) · [Mistakes Museum](mistakes-museum.md)
+More: [Prompts that worked](prompt-patterns.md) · [Mistakes Museum](mistakes-museum.md) · [Level 2 — Training Wheels](level-2.md)

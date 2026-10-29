@@ -20,8 +20,9 @@ los cambios a mano.
 **Por qué.** Los archivos de `.claude/` deciden qué puede hacer el agente. Un agente que puede reescribirlos
 puede darse cualquier permiso. Molesto en el momento, pero el clasificador tenía razón.
 
-**Qué lo evita ahora.** El hook de guarda y las reglas `deny` bloquean cualquier escritura en `.claude/settings*`,
-`.claude/hooks/`, `.claude/commands/` y `.claude/agents/`. Claude propone el cambio; tú lo pegas.
+**Qué lo evita ahora.** El hook de guarda y las reglas `deny` bloquean las escrituras de Claude en `.claude/settings*`,
+`.claude/hooks/`, `.claude/commands/` y `.claude/agents/`, dentro de [los límites del hook](../level-2.md#limits) (en
+inglés). Claude propone el cambio; tú lo pegas.
 
 **Prueba.** `test/guard.test.mjs` → *"Claude may read its guardrails but never change them"*. Dr. Repo:
 `guardrails-locked`.
@@ -134,8 +135,9 @@ plantilla inofensiva que lista los *nombres* de las variables.
 
 **Por qué.** Los comodines son glotones. Y los secretos también se esconden con otros nombres: `prod.env`, `.envrc`.
 
-**Qué lo evita ahora.** `deny` lista las variantes habituales una a una; el hook cubre cualquier otro archivo de
-entorno y solo permite `.env.example` con nombres y sin valores. `.gitignore` los ignora todos.
+**Qué lo evita ahora.** `deny` lista las variantes habituales una a una; el hook bloquea además los otros nombres de
+archivo de entorno que conoce (`.env.*`, `*.env`, `.envrc`) y solo permite `.env.example` con nombres y sin valores.
+`.gitignore` ignora esos mismos nombres.
 
 **Prueba.** `test/guard.test.mjs` → *"never reads or writes .env files, but allows names-only .env.example"*.
 Dr. Repo: `env-ignored`, `env-tracked`, `secrets`.
