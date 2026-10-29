@@ -155,3 +155,24 @@ falsa alarma sale barata; una alarma que falta, no.
 
 **Prueba.** `test/guard.test.mjs` → *"never reads or writes .env files…"* (`cat .env` y compañía se bloquean por
 el texto).
+
+---
+
+<a id="the-terminal-that-did-not-know-claude"></a>
+## 10. Lo instalé, pero la terminal seguía sin conocer claude
+
+**Qué pasó.** Solo había usado Claude Code desde la app de escritorio. En el paso 7, PowerShell respondió
+`claude : El término 'claude' no se reconoce como nombre de un cmdlet…`. Lo instalé con el comando oficial, abrí una
+terminal nueva y salió el mismo error. `claude.exe` estaba ahí, en `%USERPROFILE%\.local\bin`, pero esa carpeta no
+estaba en mi PATH. Al añadirla al PATH de mi usuario y abrir una terminal nueva, `claude` arrancó.
+
+**Por qué.** Una terminal encuentra los programas buscando en las carpetas que lista el PATH, y lee el PATH una sola
+vez, al abrirse. El instalador pone `claude` en `.local\bin`, pero no siempre añade esa carpeta al PATH: escribe el
+arreglo en sus notas finales, fáciles de pasar por alto porque el instalador no muestra progreso mientras trabaja.
+
+**Qué lo evita ahora.** El paso 7 dice que abras una terminal nueva y compruebes con `claude --version` antes de
+seguir, y [la tabla de errores](first-session.md#claude-sigue-sin-reconocerse-en-windows) da los dos comandos que
+ponen `.local\bin` en el PATH de tu usuario. La app de escritorio no necesita nada de esto.
+
+**Prueba.** Dr. Repo muestra un aviso, no un fallo, cuando ninguna carpeta del PATH tiene `claude`: `claude-on-path`.
+`test/dr-repo.test.mjs` lo ejecuta con y sin un `claude` en el PATH, y comprueba que solo mira nombres de archivo.

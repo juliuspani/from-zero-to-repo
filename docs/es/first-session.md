@@ -67,13 +67,39 @@ npm run dr-repo
 scripts está deshabilitada*, mira [la tabla del final](#si-ves-este-error).)
 
 **7. Instala Claude Code y ábrelo en el proyecto.** *El agente, dentro de tu carpeta.*
-Sigue [la instalación oficial](https://docs.claude.com/en/docs/claude-code/setup) (necesitas una cuenta de
-Claude) y, dentro de `mi-primer-proyecto`:
+Necesitas un plan de pago de Claude: el plan gratuito no incluye Claude Code ([precios oficiales](https://claude.com/pricing)).
+Instálalo con el comando oficial de tu sistema, copiado de [la instalación oficial](https://code.claude.com/docs/en/setup):
+
+Windows (PowerShell):
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+macOS y Linux:
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+No muestra progreso mientras descarga: espera a que vuelva el prompt. Después **abre una terminal nueva** (la que
+usaste para instalar aún no conoce el programa) y comprueba:
+
+```bash
+claude --version
+```
+✅ Muestra un número de versión. ¿«No se reconoce» o «command not found»? Mira [la tabla del final](#si-ves-este-error).
+
+Después, en la terminal nueva y dentro de `mi-primer-proyecto`:
 
 ```bash
 claude
 ```
-✅ Claude Code arranca y te pregunta si confías en esta carpeta. Di que sí: es tuya.
+✅ La primera vez abre el navegador para que inicies sesión en tu cuenta de Claude. Después te pregunta si confías
+en esta carpeta. Di que sí: es tuya.
+
+> **¿Prefieres una app?** La [app de escritorio de Claude](https://code.claude.com/docs/en/desktop-quickstart) usa
+> Claude Code sin terminal. Esta guía usa la terminal, para que cada paso sea igual en Windows, macOS y Linux.
 
 **8. Empieza la sesión y dale un primer paso.** *Un cambio pequeño y real.*
 Escribe `/start`. Claude resume dónde está el proyecto y comprueba que el hook de guarda está vivo (debe
@@ -116,12 +142,31 @@ siguiente.
 |---|---|---|
 | `Author identity unknown` / `Please tell me who you are` | git no sabe tu nombre ni tu email | Paso 3 |
 | `GH007: Your push would publish a private email address` | tus commits usan tu email real | [Museo 5](mistakes-museum.md#the-push-that-github-refused) |
-| `'git'`, `'node'`, `'gh'` o `'claude'` no se reconoce como nombre de un cmdlet / command not found | la terminal se abrió antes de la instalación | Ciérrala y abre una nueva |
+| `'git'`, `'node'` o `'gh'` no se reconoce como nombre de un cmdlet / command not found | la terminal se abrió antes de la instalación | Ciérrala y abre una nueva |
+| `El término 'claude' no se reconoce como nombre de un cmdlet…` / `command not found: claude` | la terminal se abrió antes de la instalación, o la carpeta de instalación no está en tu PATH | Cierra **todas** las ventanas de terminal y abre una nueva. ¿Sigue en Windows? [Dos comandos lo arreglan](#claude-sigue-sin-reconocerse-en-windows). Guía oficial: [Fix your PATH](https://code.claude.com/docs/en/troubleshoot-install#command-not-found-claude-after-installation). [Museo 10](mistakes-museum.md#the-terminal-that-did-not-know-claude) |
 | Un archivo de configuración «se ve bien» pero dice que no es válido | un BOM invisible de Word o de PowerShell | [Museo 3](mistakes-museum.md#the-word-file-with-an-invisible-character) |
 | Parece que tus ajustes se ignoran | el archivo es `settings.json.txt` | [Museo 4](mistakes-museum.md#the-settings-file-that-was-a-txt) |
 | `BLOCKED by .claude/hooks/guard.mjs: the guardrails … are edited by a human` | Claude intentó cambiar sus propias reglas | Edita tú el archivo en un editor de texto: [Museo 1](mistakes-museum.md#the-agent-that-tried-to-edit-its-own-rules) |
 | Claude se repite, olvida decisiones o dice que el contexto está casi lleno | la sesión es demasiado larga | `/handoff`, `/clear`, `/start`: [Museo 6](mistakes-museum.md#the-session-that-forgot-everything) |
 | `No se puede cargar el archivo …npm.ps1 porque la ejecución de scripts está deshabilitada en este sistema` | Windows PowerShell no ejecuta archivos de script por defecto, y `npm` es uno | Escribe `npm.cmd` en lugar de `npm`: `npm.cmd test`, `npm.cmd run dr-repo` |
 | `npm test` falla | una comprobación encontró un problema real | Pega las líneas que fallan a Claude y pídele que lo explique antes de arreglarlo |
+
+### claude sigue sin reconocerse en Windows
+
+El instalador pone `claude.exe` en `.local\bin`, dentro de tu carpeta de usuario. Comprueba que está:
+
+```powershell
+Test-Path "$HOME\.local\bin\claude.exe"
+```
+
+`True`: añade esa carpeta al PATH de tu usuario, una sola vez:
+
+```powershell
+[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path","User") + ";$HOME\.local\bin", "User")
+```
+
+Después cierra todas las ventanas de terminal, abre una nueva y ejecuta `claude --version`. `False`: la instalación no
+terminó; vuelve a ejecutar el comando de instalación del paso 7. `npm run dr-repo` también te avisa cuando `claude` no
+está en tu PATH.
 
 ¿Atascado en otra cosa? [Abre una issue](../../../../issues): las preguntas de principiante son bienvenidas.

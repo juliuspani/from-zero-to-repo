@@ -7,7 +7,7 @@ import { delimiter, join, resolve } from 'node:path';
 import { after, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { CHECKS, examine, isEnvFile, report } from '../dr-repo.mjs';
+import { CHECKS, examine, isEnvFile, NOTES, report } from '../dr-repo.mjs';
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '..', '..');
 const DR_REPO = join(ROOT, 'dr-repo.mjs');
@@ -265,5 +265,39 @@ test('environment file names', () => {
 
 test('every check links to a card that exists in the museum', () => {
   const museum = readFileSync(join(ROOT, 'docs', 'mistakes-museum.md'), 'utf8');
-  for (const check of CHECKS) assert.ok(museum.includes(`<a id="${check.museum}"></a>`), `${check.id} → #${check.museum}`);
+  for (const check of [...CHECKS, ...NOTES]) assert.ok(museum.includes(`<a id="${check.museum}"></a>`), `${check.id} → #${check.museum}`);
+});
+
+/** An environment whose PATH is git's folder only, plus `extra` folders. */
+function pathWith(env, ...extra) {
+  const git = execFileSync(process.platform === 'win32' ? 'where' : 'which', ['git'], { encoding: 'utf8' }).split(/\r?\n/)[0].trim();
+  const key = Object.keys(env).find((k) => k.toUpperCase() === 'PATH') ?? 'PATH';
+  return { ...env, [key]: [...extra, resolve(git, '..')].join(delimiter) };
+}
+
+test('a note, not a failure, when claude is not on PATH: the score and the exit code do not change', () => {
+  const r = runDrRepo(ROOT, pathWith(gitEnv('1+someone@users.noreply.github.com')));
+  assert.equal(r.status, 0, r.stdout);
+  assert.match(r.stdout, new RegExp(`Score: ${CHECKS.length}/${CHECKS.length}`));
+  assert.match(r.stdout, /^ {2}note {2}claude is not on your PATH$/m);
+  assert.match(r.stdout, /how: .*\.local\\bin/);
+  assert.match(r.stdout, /mistakes-museum\.md#the-terminal-that-did-not-know-claude/);
+  const note = r.stdout.indexOf('  note  ');
+  assert.ok(note > r.stdout.lastIndexOf('  ok  ') && note < r.stdout.indexOf('Score:'), 'after the checks, before the score');
+});
+
+test('no note when a claude program is in a PATH folder', () => {
+  const bin = tempDir();
+  writeFileSync(join(bin, process.platform === 'win32' ? 'claude.exe' : 'claude'), '');
+  const r = runDrRepo(ROOT, pathWith(gitEnv('1+someone@users.noreply.github.com'), bin));
+  assert.equal(r.status, 0, r.stdout);
+  assert.doesNotMatch(r.stdout, /note/);
+});
+
+test('the claude note only looks at file names: it never runs claude', () => {
+  const src = readFileSync(DR_REPO, 'utf8');
+  const note = src.slice(src.indexOf('export const NOTES'), src.indexOf('\n];', src.indexOf('export const NOTES')));
+  assert.ok(note.length > 0, 'NOTES not found');
+  assert.doesNotMatch(note, /execFile|spawn|exec\(|git\(/);
+  assert.match(note, /statSync/);
 });

@@ -77,8 +77,8 @@ Use it: click **Use this template** on GitHub, or follow [step 5](docs/first-ses
 **What do I need to install?** git, Node.js 20 or later, the GitHub CLI and Claude Code. [Level 1](docs/first-session.md)
 links to the official installer for each one, step by step.
 
-**How much does it cost?** This repo, git, Node.js and GitHub are free. Claude Code needs a Claude account: see the
-[official pricing page](https://claude.com/pricing).
+**How much does it cost?** This repo, git, Node.js and GitHub are free. Claude Code needs a paid Claude plan (the
+free plan does not include it): see the [official pricing page](https://claude.com/pricing).
 
 **What if I break something?** git keeps every version, so any change can be undone. On top of that, the guard
 hook blocks destructive commands, pushing asks you first, and `/handoff` never leaves work uncommitted. Stuck?
@@ -111,7 +111,7 @@ pásale **Dr. Repo** (`npm run dr-repo`, o `node dr-repo.mjs <ruta> --prompt`), 
 cómo arreglar cada fallo; si quieres los ruedines para el agente, el [nivel 2](docs/level-2.md) (en inglés).
 
 El ciclo: `/start` (el *arranque*) → un paso → `/handoff` (el *relevo*) → push → `/clear`. La primera sesión dura más o
-menos una hora. Claude Code necesita una cuenta de Claude: [precios oficiales](https://claude.com/pricing).
+menos una hora. Claude Code necesita un plan de pago de Claude: [precios oficiales](https://claude.com/pricing).
 
 En español: [Nivel 0: Empieza aquí](docs/es/start-here.md) · [Nivel 1: Tu primera sesión en 10 pasos](docs/es/first-session.md) ·
 [Museo de errores](docs/es/mistakes-museum.md) · [Chuleta](docs/es/cheatsheet.md). El resto (los patrones de prompt y el

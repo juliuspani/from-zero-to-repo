@@ -148,3 +148,24 @@ Dr. Repo: `env-ignored`, `env-tracked`, `secrets`.
 alarm is cheap; a missing alarm is not.
 
 **Proof.** `test/guard.test.mjs` → *"never reads or writes .env files…"* (`cat .env` and friends are blocked by text).
+
+---
+
+<a id="the-terminal-that-did-not-know-claude"></a>
+## 10. I installed it, but the terminal still didn't know claude
+
+**What happened.** I had only ever used Claude Code from the desktop app. At step 7, PowerShell answered
+`claude : The term 'claude' is not recognized as the name of a cmdlet…`. I installed it with the official command,
+opened a new terminal, and got the same error. `claude.exe` was there, in `%USERPROFILE%\.local\bin`, but that
+folder was not in my PATH. Once I added it to my user PATH and opened a new terminal, `claude` started.
+
+**Why.** A terminal finds programs by looking in the folders listed in PATH, and it reads PATH once, when it opens.
+The installer puts `claude` in `.local\bin` but does not always add that folder to PATH: it prints the fix in its
+setup notes, which are easy to miss because the installer shows no progress while it works.
+
+**What prevents it now.** Step 7 says to open a new terminal and check with `claude --version` before going on, and
+[the error table](first-session.md#claude-is-still-not-recognized-on-windows) gives the two commands that put
+`.local\bin` in your user PATH. The desktop app needs none of this.
+
+**Proof.** Dr. Repo prints a note, not a failure, when no `claude` is in a PATH folder: `claude-on-path`.
+`test/dr-repo.test.mjs` runs it with and without a `claude` on PATH, and checks it only looks at file names.

@@ -13,7 +13,7 @@
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { delimiter, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '..', '..');
@@ -58,6 +58,13 @@ export function realRun() {
     writeFileSync(gitconfig, '[user]\n\tname = Demo\n\temail = 12345+demo@users.noreply.github.com\n[init]\n\tdefaultBranch = main\n');
     const env = { ...process.env, GIT_CONFIG_GLOBAL: gitconfig, GIT_CONFIG_NOSYSTEM: '1' };
     plantedProject(dir, env);
+    // The demo machine has Claude Code installed: an empty `claude` in a PATH folder stands for it, so the output is
+    // the same on every machine (Dr. Repo's claude-on-path note only looks at file names, it never runs them).
+    const bin = join(base, 'bin');
+    mkdirSync(bin);
+    for (const name of ['claude', 'claude.exe']) writeFileSync(join(bin, name), '');
+    const key = Object.keys(env).find((k) => k.toUpperCase() === 'PATH') ?? 'PATH';
+    env[key] = `${bin}${delimiter}${env[key] ?? ''}`;
     try {
       return execFileSync(process.execPath, [join(ROOT, 'dr-repo.mjs'), dir], { env, encoding: 'utf8' });
     } catch (e) {
