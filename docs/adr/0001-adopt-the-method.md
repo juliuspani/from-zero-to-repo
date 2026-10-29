@@ -23,8 +23,9 @@ that took them, and where the important rules hold even when the agent makes a m
    at the stops listed in `CLAUDE.md` §7.
 5. **Rules that matter are enforced by code:** permissions in `.claude/settings.json`, the guard hook in
    `.claude/hooks/guard.mjs`, and tests in `test/`. `CLAUDE.md` guides; the code obliges.
-6. **The guardrails are edited by a human.** Claude may read `.claude/settings*` and `.claude/hooks/`, never
-   write them.
+6. **The guardrails are edited by a human.** Claude may read `.claude/settings*`, `.claude/hooks/`,
+   `.claude/commands/`, `.claude/agents/`, `.git/config` and `.git/hooks/`, never write them: they define what
+   Claude may do, which tools it gets, and what git runs. Skills stay editable: they guide, they do not grant.
 7. **Read-only consultants** (`docs/CONSULTANTS.md`) review a scope when a step asks; their findings are
    verified before they are used.
 

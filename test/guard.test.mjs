@@ -72,7 +72,8 @@ test('Claude may read its guardrails but never change them', () => {
     'echo {} > .claude/settings.json',
     "sed -i 's/deny/allow/' .claude/settings.json",
     'cp /tmp/x .claude/hooks/guard.mjs',
-    'node scripts/settings.mjs && git add .claude/settings.json',
+    'node scripts/settings.mjs',
+    'npm run settings',
     'cat .claude/settings.jsonc | tee .claude/settings.json',
   ]) {
     assert.notEqual(bash(command), null, command);
@@ -80,6 +81,59 @@ test('Claude may read its guardrails but never change them', () => {
   assert.notEqual(ps('Set-Content .claude\\settings.json "{}"'), null);
   // Skills, commands and agents are ordinary project files: the step may change them.
   assert.equal(evaluate('Edit', { file_path: '.claude/skills/engineering-standard/SKILL.md', new_string: 'x' }), null);
+});
+
+test('S-01: git cannot write a guardrail through --output', () => {
+  assert.notEqual(bash('git diff --output=.claude/hooks/guard.mjs'), null);
+  assert.notEqual(bash('git log -o .claude/settings.json'), null);
+  assert.notEqual(bash('git show HEAD:x --output .claude/settings.json'), null);
+});
+
+test('S-04/S-06: other spellings of a protected path or a guardrail are caught', () => {
+  assert.notEqual(evaluate('Read', { file_path: 'data/./private/users.csv' }), null);
+  assert.notEqual(evaluate('Read', { file_path: 'data/public/../private/users.csv' }), null);
+  assert.notEqual(evaluate('Write', { file_path: '.claude/./settings.json', content: 'x' }), null);
+  assert.notEqual(evaluate('Write', { file_path: '.claude//hooks/guard.mjs', content: 'x' }), null);
+  assert.notEqual(bash('cd .claude && echo {} > settings.json'), null);
+  assert.notEqual(bash('cp x .claude/./settings.json'), null);
+  assert.notEqual(bash('cp x .claude/setting?.json'), null);
+  assert.notEqual(bash('cp x .claude//hooks/guard.mjs'), null);
+  assert.notEqual(bash('cat data/./private/users.csv'), null);
+});
+
+test('S-07: git hooks cannot be skipped with -n, and .git/config and .git/hooks are guardrails', () => {
+  assert.notEqual(bash('git commit -n -m x'), null);
+  assert.notEqual(bash('git commit -nm x'), null);
+  assert.equal(bash('git commit -m x'), null);
+  assert.equal(bash('git commit -am x'), null);
+  assert.notEqual(evaluate('Write', { file_path: '.git/config', content: 'x' }), null);
+  assert.notEqual(evaluate('Edit', { file_path: '.git/hooks/pre-commit', new_string: 'x' }), null);
+  assert.notEqual(bash('echo x > .git/hooks/pre-commit'), null);
+});
+
+test('S-08: other environment file names are secrets too', () => {
+  for (const file_path of ['prod.env', 'config/secrets.env', '.envrc', 'deploy/.envrc']) {
+    assert.notEqual(evaluate('Read', { file_path }), null, file_path);
+  }
+  assert.notEqual(bash('cat prod.env'), null);
+  assert.notEqual(bash('cat .envrc'), null);
+  assert.notEqual(bash('cat .en?'), null);
+  assert.equal(bash('node -e "console.log(process.env.HOME)"'), null);
+});
+
+test('S-09: commands and agents are guardrails; skills stay editable', () => {
+  assert.notEqual(evaluate('Edit', { file_path: '.claude/commands/relevo.md', new_string: 'x' }), null);
+  assert.notEqual(evaluate('Write', { file_path: '.claude/agents/consultant-security.md', content: 'x' }), null);
+  assert.equal(evaluate('Read', { file_path: '.claude/agents/consultant-security.md' }), null);
+  assert.equal(bash('git add .claude/skills/engineering-standard/SKILL.md'), null);
+  assert.equal(bash('cat scripts/settings.mjs'), null);
+  assert.notEqual(bash('sed -i s/x/y/ .claude/skills/engineering-standard/SKILL.md'), null, 'via the shell, any .claude path is read-only');
+});
+
+test('S-12: grouped force flags on push are caught', () => {
+  assert.notEqual(bash('git push -uf origin main'), null);
+  assert.notEqual(bash('git push -fu origin main'), null);
+  assert.equal(bash('git push -u origin main'), null);
 });
 
 test('the hook process blocks with exit code 2 and fails closed on bad input', () => {

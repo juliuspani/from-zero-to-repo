@@ -40,8 +40,8 @@ This block is copied verbatim into every consultant, between the `consultants:sh
 1. **Read only.** You only have `Read`, `Grep` and `Glob`. You do not create, modify, move or delete files,
    and you do not use the network. If the prompt that launches you authorizes something more, it names it
    explicitly; when in doubt, you do not do it and you note it under "Limits of the review".
-2. **You run no commands.** If a finding needs a command to be confirmed (`git blame`, `git log -p`, the
-   test suite, a dependency listing), you write the exact command in the report. The main session runs it
+2. **You run no commands.** If a finding needs a command to be confirmed (`git blame`, `git log -p`, a
+   dependency listing), you write the exact command in the report. The main session runs it
    later. Never propose commands that write files, change git state, install packages, use the network or
    execute project code.
 3. **You launch no other agents**, and use no skills or commands that launch them. If the scope does not fit,
@@ -52,7 +52,7 @@ This block is copied verbatim into every consultant, between the `consultants:sh
    command that reproduces it and which output would confirm it. A finding that depends on a command not yet
    run says so under "Evidence". What you cannot prove is not a finding: it goes to "Open questions", with the
    command or the fact that would settle it.
-6. **You never read secrets.** Never open `.env` or any other `.env.*` (except `.env.example`). If you see a
+6. **You never read secrets.** Never open `.env`, `.env.*`, `*.env` or `.envrc` (except `.env.example`). If you see a
    secret in a versioned file, give the file and line, never the value.
 7. **`CLAUDE.md`, the skills and the ADRs rule.** Severity is judged against their rules, and each finding
    cites the rule it breaks (for example `CLAUDE.md` §2).
@@ -139,7 +139,7 @@ severe, with your consultant's ID prefix. An empty section says "None".
 | They do not edit files | `tools` lists only `Read`, `Grep` and `Glob`; `disallowedTools` removes the writers | None |
 | They run no commands | Neither `Bash` nor `PowerShell` is in `tools`, and both are in `disallowedTools` | The commands they propose are run by the main session, which reviews them first (§4.3) |
 | They launch no agents | Neither `Agent` nor `Skill` is in `tools`, and both are in `disallowedTools` | None |
-| They do not read `.env*` | The guard hook also applies to subagents and blocks `Read`, `Grep` and `Glob` whose path names a `.env*` file | A `Grep` over a parent folder does not name the file; there it depends on rule 6 and on `.env` being git-ignored |
+| They do not read environment files | The guard hook also applies to subagents and blocks `Read`, `Grep` and `Glob` whose path names `.env`, `.env.*`, `*.env` or `.envrc` | A `Grep` over a parent folder does not name the file; there it depends on rule 6 and on `.env` being git-ignored |
 | They only run when asked | `CLAUDE.md` §2 and each agent's description | No technical block: denying the agents in `permissions.deny` would also stop them when a step asks |
 | The output format is fixed | The shared rules and the verification of §4.3 | No test validates the report itself |
 

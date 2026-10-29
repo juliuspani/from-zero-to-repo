@@ -76,19 +76,41 @@ test('settings.json wires the guard hook and denies edits to the guardrails', ()
   const command = settings.hooks.PreToolUse.flatMap((h) => h.hooks).map((h) => h.command).join('\n');
   assert.match(command, /\.claude\/hooks\/guard\.mjs/);
   assert.ok(existsSync(resolve(ROOT, '.claude/hooks/guard.mjs')));
-  for (const rule of ['Edit(./.claude/settings.json)', 'Edit(./.claude/hooks/**)', 'Read(./.env)']) {
+  for (const rule of [
+    'Edit(./.claude/settings.json)', 'Edit(./.claude/hooks/**)', 'Edit(./.claude/commands/**)',
+    'Edit(./.claude/agents/**)', 'Edit(./.git/**)', 'Read(./.env)',
+  ]) {
     assert.ok(settings.permissions.deny.includes(rule), rule);
   }
   assert.ok(!settings.permissions.deny.includes('Read(./.env.*)'), 'a generic .env.* rule would also deny .env.example');
-  assert.ok(!settings.permissions.allow.some((r) => /git push/.test(r)), 'pushing leaves the machine: it belongs in ask');
+  for (const pattern of [/git push/, /npm run/, /npm install/]) {
+    assert.ok(!settings.permissions.allow.some((r) => pattern.test(r)), `${pattern} belongs in ask`);
+  }
 });
 
-test('every allow and ask rule for Bash has its PowerShell twin, where one exists', () => {
+test('every Bash rule in allow and ask has its PowerShell twin in the same list', () => {
   const settings = JSON.parse(read('.claude/settings.json'));
-  const allow = settings.permissions.allow;
-  for (const rule of allow.filter((r) => r.startsWith('Bash('))) {
-    assert.ok(allow.includes(rule.replace(/^Bash/, 'PowerShell')), `${rule} has no PowerShell twin`);
+  for (const name of ['allow', 'ask']) {
+    const rules = settings.permissions[name];
+    for (const rule of rules.filter((r) => r.startsWith('Bash('))) {
+      assert.ok(rules.includes(rule.replace(/^Bash/, 'PowerShell')), `${name}: ${rule} has no PowerShell twin`);
+    }
   }
+});
+
+test('every protected path is git-ignored and denied, as the hook header asks', () => {
+  const hook = read('.claude/hooks/guard.mjs');
+  const deny = JSON.parse(read('.claude/settings.json')).permissions.deny;
+  const gitignore = read('.gitignore').split('\n');
+  const folders = [...hook.matchAll(/\(\^\|\\\/\)([a-z0-9_\\/-]+?)\(\\\/\|\$\)/gi)]
+    .map((m) => m[1].replaceAll('\\/', '/'))
+    .filter((f) => !f.startsWith('\\.'));
+  assert.ok(folders.includes('data/private'), `could not read PROTECTED from the hook: ${folders}`);
+  for (const folder of folders) {
+    assert.ok(gitignore.includes(`${folder}/`), `${folder}/ missing from .gitignore`);
+    assert.ok(deny.includes(`Read(./${folder}/**)`) && deny.includes(`Edit(./${folder}/**)`), `${folder} missing from deny`);
+  }
+  for (const secret of ['.env', '.env.*', '*.env', '.envrc']) assert.ok(gitignore.includes(secret), secret);
 });
 
 test('ADRs are numbered in sequence and have the four sections', () => {

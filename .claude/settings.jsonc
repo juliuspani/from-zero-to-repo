@@ -12,8 +12,10 @@
     // File edits inside the project are accepted without asking. Commands still follow the lists below.
     "defaultMode": "acceptEdits",
 
-    // ALLOW: what Claude may run without asking. Only commands that read, or that write inside the
-    // repository and are undone with git. No push, no network, no installs.
+    // ALLOW: what Claude may run without asking: git commands that read or that write inside the repository
+    // and are undone with git, and the test suite. Be honest about the last one: `npm test` runs code from
+    // the repository, and Claude can write that code. It stays here because the step-by-step loop needs it;
+    // the hook does not inspect what it runs. Arbitrary `npm run <script>` is in ask.
     "allow": [
       "Bash(git status)",
       "Bash(git status *)",
@@ -25,7 +27,6 @@
       "Bash(git commit *)",
       "Bash(npm test)",
       "Bash(npm test *)",
-      "Bash(npm run *)",
       // On Windows Claude Code may also use PowerShell: every rule needs its PowerShell twin, or the
       // command silently falls back to defaultMode.
       "PowerShell(git status)",
@@ -37,8 +38,7 @@
       "PowerShell(git add *)",
       "PowerShell(git commit *)",
       "PowerShell(npm test)",
-      "PowerShell(npm test *)",
-      "PowerShell(npm run *)"
+      "PowerShell(npm test *)"
     ],
 
     // ASK: what Claude may run only after a human says yes, every time. Anything that leaves the machine
@@ -56,24 +56,39 @@
       "Bash(scp *)",
       "Bash(npx *)",
       "Bash(npm install *)",
+      "Bash(npm run *)",
       "PowerShell(git push *)",
       "PowerShell(git reset *)",
       "PowerShell(git rebase *)",
       "PowerShell(git clean *)",
-      "PowerShell(Remove-Item *)",
+      // PowerShell twins, plus its aliases: ri, rd and erase delete; iwr and irm download.
       "PowerShell(rm *)",
+      "PowerShell(rmdir *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(ri *)",
+      "PowerShell(rd *)",
       "PowerShell(del *)",
-      "PowerShell(Invoke-WebRequest *)",
-      "PowerShell(Invoke-RestMethod *)",
+      "PowerShell(erase *)",
       "PowerShell(curl *)",
+      "PowerShell(wget *)",
+      "PowerShell(Invoke-WebRequest *)",
+      "PowerShell(iwr *)",
+      "PowerShell(Invoke-RestMethod *)",
+      "PowerShell(irm *)",
+      "PowerShell(ssh *)",
+      "PowerShell(scp *)",
       "PowerShell(npx *)",
-      "PowerShell(npm install *)"
+      "PowerShell(npm install *)",
+      "PowerShell(npm run *)"
     ],
 
     // DENY: never, not even if a human approves in the moment (edit this file by hand instead).
     // Secrets: list the usual .env variants one by one. A generic "./.env.*" would also deny .env.example,
     // the versioned template with names only; the hook covers every other .env.* file.
-    // Guardrails: Claude must not be able to edit the rules that bind it. The hook blocks it too.
+    // Guardrails: Claude must not be able to edit the rules that bind it, widen its own tools (commands and
+    // agents declare tools) or redirect git (.git/config, .git/hooks). The hook blocks it too, also from the
+    // shell, where these Edit rules do not reach.
+    // Protected data: one Read and one Edit rule per entry of PROTECTED in the hook.
     "deny": [
       "Read(./.env)",
       "Read(./.env.local)",
@@ -90,7 +105,12 @@
       "Edit(./.claude/settings.json)",
       "Edit(./.claude/settings.jsonc)",
       "Edit(./.claude/settings.local.json)",
-      "Edit(./.claude/hooks/**)"
+      "Edit(./.claude/hooks/**)",
+      "Edit(./.claude/commands/**)",
+      "Edit(./.claude/agents/**)",
+      "Edit(./.git/**)",
+      "Read(./data/private/**)",
+      "Edit(./data/private/**)"
     ]
   },
 

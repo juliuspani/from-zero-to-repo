@@ -1,7 +1,12 @@
 # Secrets never enter the repository. .env.example (names only) is the exception.
 .env
 .env.*
+*.env
+.envrc
 !.env.example
+
+# Protected data: every entry of PROTECTED in .claude/hooks/guard.mjs (npm test checks it).
+data/private/
 
 # Personal Claude Code overrides stay on each machine.
 .claude/settings.local.json

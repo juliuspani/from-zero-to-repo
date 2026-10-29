@@ -13,7 +13,6 @@
       "Bash(git commit *)",
       "Bash(npm test)",
       "Bash(npm test *)",
-      "Bash(npm run *)",
       "PowerShell(git status)",
       "PowerShell(git status *)",
       "PowerShell(git log)",
@@ -23,8 +22,7 @@
       "PowerShell(git add *)",
       "PowerShell(git commit *)",
       "PowerShell(npm test)",
-      "PowerShell(npm test *)",
-      "PowerShell(npm run *)"
+      "PowerShell(npm test *)"
     ],
     "ask": [
       "Bash(git push *)",
@@ -39,18 +37,29 @@
       "Bash(scp *)",
       "Bash(npx *)",
       "Bash(npm install *)",
+      "Bash(npm run *)",
       "PowerShell(git push *)",
       "PowerShell(git reset *)",
       "PowerShell(git rebase *)",
       "PowerShell(git clean *)",
-      "PowerShell(Remove-Item *)",
       "PowerShell(rm *)",
+      "PowerShell(rmdir *)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(ri *)",
+      "PowerShell(rd *)",
       "PowerShell(del *)",
-      "PowerShell(Invoke-WebRequest *)",
-      "PowerShell(Invoke-RestMethod *)",
+      "PowerShell(erase *)",
       "PowerShell(curl *)",
+      "PowerShell(wget *)",
+      "PowerShell(Invoke-WebRequest *)",
+      "PowerShell(iwr *)",
+      "PowerShell(Invoke-RestMethod *)",
+      "PowerShell(irm *)",
+      "PowerShell(ssh *)",
+      "PowerShell(scp *)",
       "PowerShell(npx *)",
-      "PowerShell(npm install *)"
+      "PowerShell(npm install *)",
+      "PowerShell(npm run *)"
     ],
     "deny": [
       "Read(./.env)",
@@ -68,7 +77,12 @@
       "Edit(./.claude/settings.json)",
       "Edit(./.claude/settings.jsonc)",
       "Edit(./.claude/settings.local.json)",
-      "Edit(./.claude/hooks/**)"
+      "Edit(./.claude/hooks/**)",
+      "Edit(./.claude/commands/**)",
+      "Edit(./.claude/agents/**)",
+      "Edit(./.git/**)",
+      "Read(./data/private/**)",
+      "Edit(./data/private/**)"
     ]
   },
   "hooks": {

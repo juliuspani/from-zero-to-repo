@@ -88,7 +88,9 @@ reason in `<docs/DEPENDENCIES.md>`. If one condition fails, look for an alternat
 **Mandatory stops** (the only times Claude stops and asks):
 - creating accounts or API keys, signing up for or paying any service;
 - publishing anything outside the repository (a public repository, a release, a package, a post);
-- changing the safety rules of this file or the guardrails in `.claude/`;
+- changing the safety rules of this file or the guardrails: `.claude/settings*`, `.claude/hooks/`,
+  `.claude/commands/`, `.claude/agents/`, `.git/config` and `.git/hooks/` (Claude proposes the change; a human
+  applies it);
 - <your domain stops, e.g. "touching production data">;
 - any irreversible action outside the repository.
 
